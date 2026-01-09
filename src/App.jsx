@@ -15,6 +15,7 @@ import DestinationDetail from './pages/DestinationDetail';
 import ProtectedRoute from './components/ProtectedRoute';
 
 import FloatingWhatsApp from './components/FloatingWhatsApp';
+import ScrollToTop from './components/ScrollToTop';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -48,6 +49,7 @@ function App() {
   return (
     <Router>
       <div className="flex flex-col min-h-screen relative">
+        <ScrollToTop />
         <Navbar />
         <main className="flex-grow">
           <AnimatedRoutes />
