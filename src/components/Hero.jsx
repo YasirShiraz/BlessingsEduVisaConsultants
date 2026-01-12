@@ -2,8 +2,10 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronRight, Play, GraduationCap, Star, Globe2 } from 'lucide-react';
 import heroImg from '../assets/hero.png';
+import { useData } from '../context/DataContext';
 
 const Hero = () => {
+    const { stats } = useData();
     return (
         <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-navy">
             {/* Background Decorative Elements */}
@@ -23,18 +25,18 @@ const Hero = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="inline-flex items-center gap-2 md:gap-3 px-4 md:px-5 py-2 md:py-2.5 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-gold font-bold text-[10px] md:text-sm tracking-wide shadow-2xl"
+                        className="inline-flex items-center gap-2 md:gap-3 px-4 md:px-5 py-2 md:py-2.5 rounded-full bg-brandgreen/10 backdrop-blur-xl border border-brandgreen/20 text-brandgreen font-bold text-[10px] md:text-sm tracking-wide shadow-2xl"
                     >
                         <span className="relative flex h-2 md:h-3 w-2 md:w-3">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 md:h-3 w-2 md:w-3 bg-gold"></span>
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brandgreen opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 md:h-3 w-2 md:w-3 bg-brandgreen"></span>
                         </span>
                         AUTHORIZED GLOBAL PARTNER
                     </motion.div>
 
                     <h1 className="text-4xl sm:text-6xl md:text-8xl font-black leading-[1.1] md:leading-[1.05] tracking-tight">
                         Design Your <br />
-                        <span className="text-gold bg-clip-text">Global Future</span>
+                        <span className="text-brandgreen bg-clip-text">Global Future</span>
                     </h1>
 
                     <p className="text-lg md:text-xl text-gray-400 max-w-xl leading-relaxed font-medium">
@@ -55,16 +57,28 @@ const Hero = () => {
 
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 pt-8 md:pt-10 border-t border-white/10">
                         <div>
-                            <p className="text-3xl md:text-4xl font-black text-white">500+</p>
-                            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Partners</p>
+                            <p className="text-3xl md:text-4xl font-black text-white">
+                                {stats.find(s => s.key === 'universities')?.value || '500+'}
+                            </p>
+                            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">
+                                {stats.find(s => s.key === 'universities')?.label || 'Partners'}
+                            </p>
                         </div>
                         <div>
-                            <p className="text-3xl md:text-4xl font-black text-white">99.8%</p>
-                            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Visa Rate</p>
+                            <p className="text-3xl md:text-4xl font-black text-white">
+                                {stats.find(s => s.key === 'success_stories')?.value || '99.8%'}
+                            </p>
+                            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">
+                                {stats.find(s => s.key === 'success_stories')?.label || 'Visa Rate'}
+                            </p>
                         </div>
                         <div className="hidden md:block">
-                            <p className="text-4xl font-black text-white">15+</p>
-                            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Years XP</p>
+                            <p className="text-4xl font-black text-white">
+                                {stats.find(s => s.key === 'years')?.value || '15+'}
+                            </p>
+                            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">
+                                {stats.find(s => s.key === 'years')?.label || 'Years XP'}
+                            </p>
                         </div>
                     </div>
                 </motion.div>

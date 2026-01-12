@@ -1,9 +1,11 @@
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Clock, MessageSquare, Send, Globe2, Facebook, Instagram, Linkedin, Users } from 'lucide-react';
 import { useState } from 'react';
+import { useData } from '../context/DataContext';
 
 const Contact = () => {
     const [status, setStatus] = useState('');
+    const { contact, countries } = useData();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -17,24 +19,24 @@ const Contact = () => {
     const contactInfo = [
         {
             title: 'Call Us',
-            details: ['+923247569469'],
-            href: 'tel:+923247569469',
+            details: [contact.phone],
+            href: `tel:${contact.phone}`,
             icon: Phone,
             color: 'text-blue-600',
             bg: 'bg-blue-50'
         },
         {
             title: 'Email Us',
-            details: ['blessings.eduvisa@gmail.com', 'apply@blessingseduvisa.com'],
-            href: 'mailto:blessings.eduvisa@gmail.com',
+            details: [contact.email],
+            href: `mailto:${contact.email}`,
             icon: Mail,
             color: 'text-gold-dark',
             bg: 'bg-gold/10'
         },
         {
             title: 'Head Office',
-            details: ['Suite 405, City Tower', 'Main Boulevard, Gulberg, Lahore'],
-            href: 'https://maps.google.com/?q=City+Tower+Main+Boulevard+Gulberg+Lahore',
+            details: [contact.address],
+            href: `https://maps.google.com/?q=${contact.address}`,
             icon: MapPin,
             color: 'text-green-500',
             bg: 'bg-green-50'
@@ -58,7 +60,7 @@ const Contact = () => {
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                     >
-                        <h1 className="text-4xl md:text-7xl font-black text-white mb-4 md:mb-6 leading-tight">Let's <span className="text-gold">Connect</span></h1>
+                        <h1 className="text-4xl md:text-7xl font-black text-white mb-4 md:mb-6 leading-tight">Let's <span className="text-brandgreen">Connect</span></h1>
                         <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto font-medium leading-relaxed">Have questions about studying abroad? Our expert counselors are ready to help you every step of the way.</p>
                     </motion.div>
                 </div>
@@ -105,7 +107,7 @@ const Contact = () => {
                             <Globe2 size={240} className="w-48 h-48 md:w-60 md:h-60" />
                         </div>
                         <div className="relative z-10 flex-grow text-center md:text-left">
-                            <h2 className="text-3xl md:text-5xl font-black mb-6 md:mb-8 leading-tight">Send Us a <br className="hidden md:block" /><span className="text-gold">Direct Message</span></h2>
+                            <h2 className="text-3xl md:text-5xl font-black mb-6 md:mb-8 leading-tight">Send Us a <br className="hidden md:block" /><span className="text-brandgreen">Direct Message</span></h2>
                             <p className="text-base md:text-lg text-gray-400 mb-8 md:mb-12 font-medium leading-relaxed">Our typical response time is within 4 working hours. We are here to listen and help you achieve your goals.</p>
 
                             <div className="space-y-8 md:space-y-10">
@@ -114,7 +116,7 @@ const Contact = () => {
                                     { label: 'Follow Us', value: 'Stay connected with us', icon: Users }
                                 ].map((item, idx) => (
                                     <div key={idx} className="flex flex-col md:flex-row gap-4 md:gap-6 items-center md:items-center">
-                                        <div className="w-12 h-12 md:w-14 md:h-14 bg-white/5 border border-white/10 rounded-xl md:rounded-2xl flex items-center justify-center text-gold">
+                                        <div className="w-12 h-12 md:w-14 md:h-14 bg-white/5 border border-white/10 rounded-xl md:rounded-2xl flex items-center justify-center text-brandgreen">
                                             {(() => {
                                                 const SideIcon = item.icon;
                                                 if (!SideIcon) return null;
@@ -122,7 +124,7 @@ const Contact = () => {
                                             })()}
                                         </div>
                                         <div className="space-y-0.5 md:space-y-1 text-center md:text-left">
-                                            <p className="text-[9px] md:text-[10px] uppercase font-black tracking-widest text-gold opacity-80">{item.label}</p>
+                                            <p className="text-[9px] md:text-[10px] uppercase font-black tracking-widest text-brandgreen opacity-80">{item.label}</p>
                                             <p className="text-lg md:text-xl font-black">{item.value}</p>
                                         </div>
                                     </div>
@@ -130,7 +132,7 @@ const Contact = () => {
 
                                 <div className="flex justify-center md:justify-start gap-3 md:gap-4 pt-4">
                                     {[Facebook, Instagram, Linkedin].map((Icon, idx) => (
-                                        <a key={idx} href="#" className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-gold hover:text-navy hover:scale-110 transition-all">
+                                        <a key={idx} href="#" className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-brandgreen hover:text-navy hover:scale-110 transition-all">
                                             <Icon size={18} md:size={20} />
                                         </a>
                                     ))}
@@ -159,12 +161,10 @@ const Contact = () => {
                                 <label className="text-[10px] md:text-xs font-black uppercase tracking-widest text-navy opacity-60">Target Destination</label>
                                 <div className="relative">
                                     <select className="w-full px-5 md:px-6 py-3 md:py-4 bg-gray-50 rounded-xl md:rounded-2xl border border-gray-100 focus:border-gold outline-none transition-all font-bold text-sm md:text-base appearance-none">
-                                        <option>Select Country</option>
-                                        <option>United Kingdom</option>
-                                        <option>Canada</option>
-                                        <option>Australia</option>
-                                        <option>USA</option>
-                                        <option>Germany</option>
+                                        <option value="">Select Country</option>
+                                        {countries.map(c => (
+                                            <option key={c.id} value={c.name}>{c.name}</option>
+                                        ))}
                                     </select>
                                     <div className="absolute right-5 md:right-6 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
                                         ▼
@@ -192,7 +192,7 @@ const Contact = () => {
                             <MapPin className="text-gold w-8 h-8 md:w-10 md:h-10" />
                             <div>
                                 <p className="text-[10px] md:text-sm font-black text-navy uppercase tracking-widest">Head Office</p>
-                                <p className="text-xs md:text-base font-bold text-gray-500">Gulberg III, Lahore, Pakistan</p>
+                                <p className="text-xs md:text-base font-bold text-gray-500 w-full truncate">{contact.address}</p>
                             </div>
                         </div>
                     </div>

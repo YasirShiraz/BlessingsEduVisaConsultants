@@ -25,10 +25,10 @@ const DestinationCard = ({ name, id, slug, image, students, rating }) => {
             {/* Content Layer */}
             <div className="absolute bottom-6 md:bottom-10 left-6 md:left-10 right-6 md:right-10 z-20">
                 <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
-                    <span className="px-3 md:px-5 py-1.5 md:py-2 bg-gold/90 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest text-navy shadow-lg">
+                    <span className="px-3 md:px-5 py-1.5 md:py-2 bg-brandgreen/90 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest text-white shadow-lg">
                         {displayMeta}
                     </span>
-                    <span className="px-3 md:px-5 py-1.5 md:py-2 bg-white/10 backdrop-blur-md rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest text-gold border border-white/10">
+                    <span className="px-3 md:px-5 py-1.5 md:py-2 bg-white/10 backdrop-blur-md rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest text-brandgreen border border-white/10">
                         ★ {displayRating}
                     </span>
                 </div>
@@ -37,7 +37,7 @@ const DestinationCard = ({ name, id, slug, image, students, rating }) => {
 
                 <Link
                     to={`/destinations/${destinationId}`}
-                    className="inline-flex items-center gap-3 md:gap-4 px-6 md:px-10 py-3.5 md:py-5 bg-navy/60 backdrop-blur-md border border-white/10 rounded-xl md:rounded-2xl text-white font-black text-xs md:text-sm group/btn hover:bg-gold hover:text-navy hover:border-gold transition-all duration-300"
+                    className="inline-flex items-center gap-3 md:gap-4 px-6 md:px-10 py-3.5 md:py-5 bg-navy/60 backdrop-blur-md border border-white/10 rounded-xl md:rounded-2xl text-white font-black text-xs md:text-sm group/btn hover:bg-brandgreen hover:text-white hover:border-brandgreen transition-all duration-300"
                 >
                     Explore <ArrowUpRight size={18} md:size={20} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
                 </Link>
@@ -45,8 +45,8 @@ const DestinationCard = ({ name, id, slug, image, students, rating }) => {
 
             {/* Hover Decorative Element (Top Right) */}
             <div className="absolute top-6 md:top-8 right-6 md:right-8">
-                <div className="bg-gold p-3 md:p-4 rounded-2xl md:rounded-3xl shadow-2xl transform group-hover:rotate-12 transition-transform duration-500">
-                    <GraduationCap className="text-navy" size={24} md:size={28} />
+                <div className="bg-brandgreen p-3 md:p-4 rounded-2xl md:rounded-3xl shadow-2xl transform group-hover:rotate-12 transition-transform duration-500">
+                    <GraduationCap className="text-white" size={24} md:size={28} />
                 </div>
             </div>
         </motion.div>

@@ -30,7 +30,9 @@ export const useAuth = () => {
 
     const loginWithGoogle = async () => {
         if (!auth) {
-            alert("Firebase is not configured. Please add your credentials in src/auth/firebase.js");
+            // Fallback to Demo Login for Local/Offline usage
+            console.warn("Firebase not configured. Logging in as Demo User.");
+            loginWithDemo();
             return;
         }
         try {
@@ -41,9 +43,22 @@ export const useAuth = () => {
     };
 
     const loginWithEmail = async (email, password) => {
-        if (!auth) {
-            alert("Firebase is not configured.");
+        // Local Custom Credential Check
+        if (email === 'shahzib@gmail.com' && password === 'shahzab@123') {
+            const adminUser = {
+                uid: 'custom-admin',
+                email: 'shahzib@gmail.com', // Matches the isAdmin check expectation if updated
+                displayName: 'Shahzaib Admin',
+                photoURL: 'https://ui-avatars.com/api/?name=Shahzaib+Admin&background=random'
+            };
+            setUser(adminUser);
+            setLoading(false);
             return;
+        }
+
+        if (!auth) {
+            console.warn("Firebase is not configured. Redirecting to local fallback.");
+            throw new Error("Firebase unavailable");
         }
         try {
             await signInWithEmailAndPassword(auth, email, password);
@@ -53,8 +68,22 @@ export const useAuth = () => {
         }
     };
 
+    const loginWithDemo = () => {
+        const demoUser = {
+            uid: 'demo-admin',
+            email: 'admin@blessingseduvisa.com',
+            displayName: 'Demo Admin',
+            photoURL: 'https://ui-avatars.com/api/?name=Admin+User'
+        };
+        setUser(demoUser);
+        setLoading(false);
+    };
+
     const logout = async () => {
-        if (!auth) return;
+        if (!auth) {
+            setUser(null);
+            return;
+        }
         try {
             await signOut(auth);
         } catch (error) {
@@ -62,13 +91,17 @@ export const useAuth = () => {
         }
     };
 
-    const isAdmin = user && user.email === 'admin@blessingseduvisa.com'; // Example admin check
+    const isAdmin = user && (
+        user.email === 'admin@blessingseduvisa.com' ||
+        user.email === 'shahzib@gmail.com'
+    );
 
     return {
         user,
         loading,
         loginWithGoogle,
         loginWithEmail,
+        loginWithDemo,
         logout,
         isAdmin
     };

@@ -17,6 +17,11 @@ export default {
           light: '#e0c061',
           dark: '#b8922e',
         },
+        brandgreen: {
+          DEFAULT: '#1B5E20', // Forest Green
+          light: '#2E7D32',
+          dark: '#1B5E20',
+        },
         lightgray: '#F5F5F5',
       },
       fontFamily: {

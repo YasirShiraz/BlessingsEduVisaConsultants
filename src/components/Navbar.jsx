@@ -31,7 +31,7 @@ const Navbar = () => {
                         </div>
                         <div className="flex flex-col">
                             <span className="font-black text-2xl tracking-tighter text-navy leading-none">
-                                Blessings <span className="text-gold">EduVisa</span>
+                                Blessings <span className="text-brandgreen">EduVisa</span>
                             </span>
                             <span className="text-[10px] uppercase tracking-[0.2em] font-black text-gray-400 mt-1">Consultants</span>
                         </div>
@@ -70,12 +70,12 @@ const Navbar = () => {
                                     </motion.div>
                                 </div>
                             ) : (
-                                <button
-                                    onClick={loginWithGoogle}
+                                <Link
+                                    to="/admin/login"
                                     className="flex items-center gap-2 text-navy font-black uppercase tracking-widest text-xs hover:text-gold transition-colors"
                                 >
                                     Login
-                                </button>
+                                </Link>
                             )}
                             <Link to="/apply" className="btn-secondary px-8 py-3.5 text-sm font-black uppercase tracking-widest shadow-lg hover:shadow-gold/20 translate-y-0 active:translate-y-0.5">
                                 Apply
@@ -146,12 +146,13 @@ const Navbar = () => {
                                         </button>
                                     </div>
                                 ) : (
-                                    <button
-                                        onClick={loginWithGoogle}
+                                    <Link
+                                        to="/admin/login"
                                         className="btn-outline w-full flex justify-center items-center gap-2 py-4"
+                                        onClick={() => setIsOpen(false)}
                                     >
-                                        <User size={20} /> Student Login
-                                    </button>
+                                        <User size={20} /> Student / Admin Login
+                                    </Link>
                                 )}
                                 <Link
                                     to="/apply"

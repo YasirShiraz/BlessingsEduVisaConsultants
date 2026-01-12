@@ -4,9 +4,11 @@ import { GraduationCap, MapPin, User, Send, CheckCircle, Loader2 } from 'lucide-
 import { db, auth } from '../auth/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { useAuth } from '../auth/useAuth';
+import { useData } from '../context/DataContext';
 
 const Apply = () => {
     const { user, loginWithGoogle } = useAuth();
+    const { addApplication } = useData();
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -37,31 +39,38 @@ const Apply = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (!auth || !db) {
-            alert("Firebase services are not initialized. Please configure credentials in src/auth/firebase.js");
-            setIsSubmitted(true); // Allow user to see the "success" UI for local testing
-            return;
-        }
-
-        if (!user) {
-            loginWithGoogle();
-            return;
-        }
-
         setLoading(true);
+
         try {
-            await addDoc(collection(db, "applications"), {
+            // Attempt Firebase save if available, otherwise just use Local Storage
+            const newApp = {
                 ...formData,
-                userId: user.uid,
-                userEmail: user.email,
+                userId: user?.uid || 'guest',
+                userEmail: user?.email || formData.email,
                 status: 'Pending',
-                createdAt: serverTimestamp()
-            });
+                createdAt: new Date()
+            };
+
+            // Save to Local Data Store (Primary for this request)
+            addApplication(newApp);
+
+            // Optional: Try Firebase if configured (Silent fail if not)
+            if (db && auth) {
+                try {
+                    await addDoc(collection(db, "applications"), {
+                        ...newApp,
+                        createdAt: serverTimestamp()
+                    });
+                } catch (fbError) {
+                    console.warn("Firebase save failed, but saved locally:", fbError);
+                }
+            }
+
             setIsSubmitted(true);
         } catch (error) {
             console.error("Submission Error:", error);
-            alert("Failed to submit application. Please try again.");
+            // We'll let the user see a more subtle error if we had an error state, 
+            // but for now let's just log it and not show a disruptive alert.
         } finally {
             setLoading(false);
         }
@@ -122,7 +131,7 @@ const Apply = () => {
                 <div className="flex justify-between mb-8 md:mb-12 relative px-2">
                     <div className="absolute top-[22px] md:top-1/2 left-0 right-0 h-1 bg-gray-200 -translate-y-1/2 z-0"></div>
                     <div
-                        className="absolute top-[22px] md:top-1/2 left-0 h-1 bg-gold -translate-y-1/2 z-0 transition-all duration-500"
+                        className="absolute top-[22px] md:top-1/2 left-0 h-1 bg-brandgreen -translate-y-1/2 z-0 transition-all duration-500"
                         style={{ width: `${(step - 1) * 33.33}%` }}
                     ></div>
                     {steps.map((s, i) => {
@@ -131,15 +140,15 @@ const Apply = () => {
                         const isCurrent = step === i + 1;
                         return (
                             <div key={i} className="relative z-10 flex flex-col items-center">
-                                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${isCurrent ? 'bg-navy text-gold ring-4 ring-gold/20' :
-                                    isActive ? 'bg-gold text-white' : 'bg-white text-gray-400 border-2'
+                                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${isCurrent ? 'bg-navy text-brandgreen ring-4 ring-brandgreen/20' :
+                                    isActive ? 'bg-brandgreen text-white' : 'bg-white text-gray-400 border-2'
                                     }`}>
                                     {(() => {
                                         const StepIcon = s.icon;
                                         return <StepIcon size={18} md:size={20} />;
                                     })()}
                                 </div>
-                                <span className={`text-[9px] md:text-xs font-black mt-2 uppercase tracking-tight md:tracking-tighter ${isCurrent ? 'text-navy' : isActive ? 'text-gold' : 'text-gray-400'
+                                <span className={`text-[9px] md:text-xs font-black mt-2 uppercase tracking-tight md:tracking-tighter ${isCurrent ? 'text-navy' : isActive ? 'text-brandgreen' : 'text-gray-400'
                                     }`}>
                                     {s.title}
                                 </span>

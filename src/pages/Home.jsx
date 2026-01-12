@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import Hero from '../components/Hero';
+import { useData } from '../context/DataContext';
+import CountriesSection from '../components/CountriesSection';
 import ServiceCard from '../components/ServiceCard';
 import DestinationCard from '../components/DestinationCard';
 import {
@@ -25,10 +27,16 @@ import {
 import { Link } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import { db, auth } from '../auth/firebase';
+import { db } from '../auth/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const Home = () => {
+    const { stats, testimonials, countries, contact } = useData();
+    const [testimonialIndex, setTestimonialIndex] = useState(0);
+    const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
     const services = [
         {
             title: 'Career Counseling',
@@ -52,32 +60,6 @@ const Home = () => {
         }
     ];
 
-    const [testimonialIndex, setTestimonialIndex] = useState(0);
-    const testimonials = [
-        {
-            name: 'Sarah Ahmed',
-            country: 'UK',
-            text: "Blessings EduVisa made my dream of studying in the UK a reality. Their team guided me through every step.",
-            rating: 5
-        },
-        {
-            name: 'Rajiv Sharma',
-            country: 'Canada',
-            text: "I was confused about the visa process, but the consultants here were incredibly patient and professional.",
-            rating: 5
-        },
-        {
-            name: 'Emily Chen',
-            country: 'USA',
-            text: "The career counseling I received was a game-changer. They helped me choose a path I'm passionate about.",
-            rating: 5
-        }
-    ];
-
-    const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isSubmitted, setIsSubmitted] = useState(false);
-
     const handleContactSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -93,35 +75,10 @@ const Home = () => {
             setTimeout(() => setIsSubmitted(false), 5000);
         } catch (error) {
             console.error("Submission error:", error);
-            alert("Something went wrong. Please try again.");
         } finally {
             setIsSubmitting(false);
         }
     };
-
-    const commonDestinations = [
-        {
-            id: 'united-kingdom',
-            name: 'United Kingdom',
-            image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=800',
-            students: '120K+',
-            rating: '4.8'
-        },
-        {
-            id: 'canada',
-            name: 'Canada',
-            image: 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?auto=format&fit=crop&q=80&w=800',
-            students: '85K+',
-            rating: '4.9'
-        },
-        {
-            id: 'usa',
-            name: 'USA',
-            image: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&q=80&w=800',
-            students: '150K+',
-            rating: '4.7'
-        },
-    ];
 
     const processSteps = [
         { title: 'Counseling', desc: 'Identify your goals and select the best career path.', icon: Search },
@@ -139,15 +96,17 @@ const Home = () => {
         >
             <Hero />
 
+            <CountriesSection />
+
             {/* Services Section */}
             <section className="section-padding bg-gray-50 border-y border-gray-100">
                 <div className="container-custom">
                     <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-10 md:mb-16 gap-6 md:gap-8">
                         <div className="space-y-3 md:space-y-4 text-center md:text-left">
-                            <h2 className="text-3xl md:text-5xl font-black text-navy leading-tight">Our Premium <br className="hidden md:block" /><span className="text-gold">Consultancy Services</span></h2>
-                            <div className="w-16 md:w-20 h-1.5 md:h-2 bg-gold rounded-full mx-auto md:mx-0"></div>
+                            <h2 className="text-3xl md:text-5xl font-black text-navy leading-tight">Our Premium <br className="hidden md:block" /><span className="text-brandgreen">Consultancy Services</span></h2>
+                            <div className="w-16 md:w-20 h-1.5 md:h-2 bg-brandgreen rounded-full mx-auto md:mx-0"></div>
                         </div>
-                        <Link to="/services" className="text-gold font-bold flex items-center gap-2 hover:underline text-base md:text-lg">
+                        <Link to="/services" className="text-brandgreen font-bold flex items-center gap-2 hover:underline text-base md:text-lg">
                             View All Services <ChevronRight size={18} />
                         </Link>
                     </div>
@@ -167,12 +126,12 @@ const Home = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         className="relative"
                     >
-                        <div className="absolute -inset-10 bg-gold/5 rounded-full blur-[100px] -z-10"></div>
-                        <h2 className="text-3xl md:text-6xl font-black text-navy mb-8 md:mb-10 leading-tight text-center md:text-left">Why Students Trust <br className="hidden md:block" /><span className="text-gold">Blessings EduVisa</span></h2>
+                        <div className="absolute -inset-10 bg-brandgreen/5 rounded-full blur-[100px] -z-10"></div>
+                        <h2 className="text-3xl md:text-6xl font-black text-navy mb-8 md:mb-10 leading-tight text-center md:text-left">Why Students Trust <br className="hidden md:block" /><span className="text-brandgreen">Blessings EduVisa</span></h2>
                         <div className="space-y-8">
                             {[
-                                { title: '99% Visa Success Rate', desc: 'Our expert documentation team ensures minimal rejection risk.' },
-                                { title: '500+ Partner Universities', desc: 'Wide range of options across all major study destinations.' },
+                                { title: `${stats.find(s => s.key === 'visa_success')?.value || '98%'} Visa Success Rate`, desc: 'Our expert documentation team ensures minimal rejection risk.' },
+                                { title: `${stats.find(s => s.key === 'universities')?.value || '1000+'} Partner Universities`, desc: 'Wide range of options across all major study destinations.' },
                                 { title: 'Free Career Consultation', desc: 'Personalized sessions to map out your academic journey.' },
                                 { title: 'No Hidden Charges', desc: 'Transparent process with clear communication on all costs.' }
                             ].map((item, i) => (
@@ -183,7 +142,7 @@ const Home = () => {
                                     transition={{ delay: i * 0.1 }}
                                     className="flex gap-6 items-start group"
                                 >
-                                    <div className="w-14 h-14 shrink-0 rounded-2xl bg-white shadow-lg border border-gray-100 flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-white transition-all transform group-hover:scale-110">
+                                    <div className="w-14 h-14 shrink-0 rounded-2xl bg-white shadow-lg border border-gray-100 flex items-center justify-center text-brandgreen group-hover:bg-brandgreen group-hover:text-white transition-all transform group-hover:scale-110">
                                         <CheckCircle2 size={28} />
                                     </div>
                                     <div>
@@ -203,19 +162,19 @@ const Home = () => {
                         <div className="space-y-4 md:space-y-6 pt-6 md:pt-12">
                             <div className="bg-navy p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] text-white shadow-2xl space-y-3 md:space-y-4">
                                 <Globe2 size={32} className="md:w-10 md:h-10 text-gold" />
-                                <p className="text-2xl md:text-3xl font-black">25+</p>
+                                <p className="text-2xl md:text-3xl font-black">{stats.find(s => s.key === 'countries')?.value || '40+'}</p>
                                 <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Countries</p>
                             </div>
                             <div className="bg-white p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] shadow-xl border border-gray-50 space-y-3 md:space-y-4">
                                 <Users size={32} className="md:w-10 md:h-10 text-navy" />
-                                <p className="text-2xl md:text-3xl font-black text-navy">5000+</p>
+                                <p className="text-2xl md:text-3xl font-black text-navy">{stats.find(s => s.key === 'satisfied_students')?.value || '850+'}</p>
                                 <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Students</p>
                             </div>
                         </div>
                         <div className="space-y-4 md:space-y-6">
                             <div className="bg-white p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] shadow-xl border border-gray-50 space-y-3 md:space-y-4">
                                 <BarChart3 size={32} className="md:w-10 md:h-10 text-navy" />
-                                <p className="text-2xl md:text-3xl font-black text-navy">99.8%</p>
+                                <p className="text-2xl md:text-3xl font-black text-navy">{stats.find(s => s.key === 'success_stories')?.value || '200+'}</p>
                                 <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Visa Rate</p>
                             </div>
                             <div className="bg-gold p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] text-navy shadow-2xl space-y-3 md:space-y-4">
@@ -241,11 +200,11 @@ const Home = () => {
                         </p>
                         <div className="flex justify-center md:justify-start gap-8 md:gap-10">
                             <div className="space-y-1 md:space-y-2 text-center md:text-left">
-                                <p className="text-2xl md:text-3xl font-black text-navy">15+</p>
+                                <p className="text-2xl md:text-3xl font-black text-navy">{stats.find(s => s.key === 'years_excellence')?.value || '15+'}</p>
                                 <p className="text-[10px] md:text-xs font-black uppercase tracking-widest text-gold">Years Excellence</p>
                             </div>
                             <div className="space-y-1 md:space-y-2 text-center md:text-left">
-                                <p className="text-2xl md:text-3xl font-black text-navy">500+</p>
+                                <p className="text-2xl md:text-3xl font-black text-navy">{stats.find(s => s.key === 'universities')?.value || '1000+'}</p>
                                 <p className="text-[10px] md:text-xs font-black uppercase tracking-widest text-gold">Global Partners</p>
                             </div>
                         </div>
@@ -283,7 +242,7 @@ const Home = () => {
                     </Link>
                 </div>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    {commonDestinations.map((dest, index) => (
+                    {countries.slice(0, 3).map((dest, index) => (
                         <DestinationCard key={index} {...dest} />
                     ))}
                 </div>
@@ -333,35 +292,41 @@ const Home = () => {
                     </div>
 
                     <div className="max-w-4xl mx-auto relative px-4 md:px-10">
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={testimonialIndex}
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
-                                className="bg-white p-8 md:p-16 rounded-[2.5rem] md:rounded-[3rem] shadow-xl border border-gray-50 flex flex-col items-center text-center"
-                            >
-                                <Quote className="text-gold/20 w-12 h-12 md:w-16 md:h-16 mb-6 md:mb-8" />
-                                <p className="text-lg md:text-2xl text-navy font-medium italic mb-8 md:mb-10 leading-relaxed">
-                                    "{testimonials[testimonialIndex].text}"
-                                </p>
-                                <div className="flex gap-1 text-gold mb-4 md:mb-6">
-                                    {[...Array(testimonials[testimonialIndex].rating)].map((_, i) => <Star key={i} size={16} md:size={18} fill="currentColor" />)}
-                                </div>
-                                <h4 className="text-lg md:text-xl font-bold text-navy">{testimonials[testimonialIndex].name}</h4>
-                                <p className="text-gold text-[10px] md:text-xs font-black uppercase tracking-widest mt-1">Study in {testimonials[testimonialIndex].country}</p>
-                            </motion.div>
-                        </AnimatePresence>
+                        {testimonials.length > 0 ? (
+                            <>
+                                <AnimatePresence mode="wait">
+                                    <motion.div
+                                        key={testimonialIndex}
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.9 }}
+                                        className="bg-white p-8 md:p-16 rounded-[2.5rem] md:rounded-[3rem] shadow-xl border border-gray-50 flex flex-col items-center text-center"
+                                    >
+                                        <Quote className="text-gold/20 w-12 h-12 md:w-16 md:h-16 mb-6 md:mb-8" />
+                                        <p className="text-lg md:text-2xl text-navy font-medium italic mb-8 md:mb-10 leading-relaxed">
+                                            "{testimonials[testimonialIndex]?.text}"
+                                        </p>
+                                        <div className="flex gap-1 text-gold mb-4 md:mb-6">
+                                            {[...Array(testimonials[testimonialIndex]?.rating || 5)].map((_, i) => <Star key={i} size={16} md:size={18} fill="currentColor" />)}
+                                        </div>
+                                        <h4 className="text-lg md:text-xl font-bold text-navy">{testimonials[testimonialIndex]?.name}</h4>
+                                        <p className="text-gold text-[10px] md:text-xs font-black uppercase tracking-widest mt-1">Study in {testimonials[testimonialIndex]?.country}</p>
+                                    </motion.div>
+                                </AnimatePresence>
 
-                        <div className="flex justify-center gap-4 mt-12">
-                            {testimonials.map((_, i) => (
-                                <button
-                                    key={i}
-                                    onClick={() => setTestimonialIndex(i)}
-                                    className={`w-3 h-3 rounded-full transition-all ${i === testimonialIndex ? 'bg-gold w-8' : 'bg-gray-300'}`}
-                                />
-                            ))}
-                        </div>
+                                <div className="flex justify-center gap-4 mt-12">
+                                    {testimonials.map((_, i) => (
+                                        <button
+                                            key={i}
+                                            onClick={() => setTestimonialIndex(i)}
+                                            className={`w-3 h-3 rounded-full transition-all ${i === testimonialIndex ? 'bg-gold w-8' : 'bg-gray-300'}`}
+                                        />
+                                    ))}
+                                </div>
+                            </>
+                        ) : (
+                            <p className="text-center text-gray-400 font-bold py-10">No testimonials shared yet.</p>
+                        )}
                     </div>
                 </div>
             </section>
@@ -381,8 +346,8 @@ const Home = () => {
 
                             <div className="space-y-5 md:space-y-6">
                                 {[
-                                    { icon: Phone, label: 'Call Support', value: '+92 324 7569469', href: 'tel:+923247569469', color: 'text-blue-400' },
-                                    { icon: Mail, label: 'Email Inquiry', value: 'blessings.eduvisa@gmail.com', href: 'mailto:blessings.eduvisa@gmail.com', color: 'text-gold' },
+                                    { icon: Phone, label: 'Call Support', value: contact.phone, href: `tel:${contact.phone}`, color: 'text-blue-400' },
+                                    { icon: Mail, label: 'Email Inquiry', value: contact.email, href: `mailto:${contact.email}`, color: 'text-gold' },
                                     { icon: MapPin, label: 'Main Office', value: 'Lahore, Pakistan', href: 'https://maps.google.com/?q=Lahore,Pakistan', color: 'text-green-400' }
                                 ].map((item, idx) => (
                                     <motion.a
@@ -467,7 +432,7 @@ const Home = () => {
                     </div>
                     <div className="relative z-10">
                         <h2 className="text-3xl md:text-6xl font-black mb-6 md:mb-8 leading-tight">Ready to Start Your <br className="hidden md:block" />Educational Journey?</h2>
-                        <p className="mb-8 md:mb-12 font-bold text-lg md:text-xl max-w-2xl mx-auto opacity-80">Don't wait for your dreams. Join 5000+ successful students who made it to their dream careers with us.</p>
+                        <p className="mb-8 md:mb-12 font-bold text-lg md:text-xl max-w-2xl mx-auto opacity-80">Don't wait for your dreams. Join {stats.find(s => s.key === 'satisfied_students')?.value || '500+'} successful students who made it to their dream careers with us.</p>
                         <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center">
                             <Link to="/apply" className="btn-primary flex items-center justify-center gap-3 px-10 md:px-12 py-4 md:py-5 text-lg md:text-xl shadow-xl hover:scale-105 transition-transform">
                                 Apply Online Now <ArrowRight size={20} md:size={24} />

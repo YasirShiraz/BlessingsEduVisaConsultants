@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import { GraduationCap, Mail, Phone, MapPin, Facebook, Instagram, Linkedin, MessageCircle } from 'lucide-react';
 import logo from '../assets/logo_final.png';
+import { useData } from '../context/DataContext';
 
 const Footer = () => {
+    const { contact } = useData();
     return (
         <footer className="bg-navy text-white pt-12 md:pt-16 pb-8">
             <div className="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12">
@@ -13,7 +15,7 @@ const Footer = () => {
                             <img src={logo} alt="Blessings EduVisa" className="w-10 h-10 md:w-12 md:h-12 object-contain" />
                         </div>
                         <span className="font-bold text-lg md:text-xl tracking-tight text-white">
-                            Blessings <span className="text-gold">EduVisa</span>
+                            Blessings <span className="text-brandgreen">EduVisa</span>
                         </span>
                     </Link>
                     <p className="text-sm md:text-base text-gray-400 font-medium">
@@ -55,15 +57,15 @@ const Footer = () => {
                     <ul className="space-y-4 text-gray-400">
                         <li className="flex items-start gap-3">
                             <MapPin size={20} className="text-gold shrink-0" />
-                            <a href="https://maps.google.com/?q=Al-Hafeez+Executive+Gulberg+III+Lahore" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Office # 316, 3rd Floor, Al-Hafeez Executive, Block C3 Gulberg III, Lahore</a>
+                            <a href={`https://maps.google.com/?q=${contact.address}`} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">{contact.address}</a>
                         </li>
                         <li className="flex items-center gap-3">
                             <Phone size={20} className="text-gold shrink-0" />
-                            <a href="tel:+923247569469" className="hover:text-white transition-colors">03247569469</a>
+                            <a href={`tel:${contact.phone}`} className="hover:text-white transition-colors">{contact.phone}</a>
                         </li>
                         <li className="flex items-center gap-3 overflow-hidden">
                             <Mail size={20} className="text-gold shrink-0" />
-                            <a href="mailto:blessings.eduvisa@gmail.com" className="hover:text-white transition-colors break-all md:break-normal">blessings.eduvisa@gmail.com</a>
+                            <a href={`mailto:${contact.email}`} className="hover:text-white transition-colors break-all md:break-normal">{contact.email}</a>
                         </li>
                     </ul>
                 </div>

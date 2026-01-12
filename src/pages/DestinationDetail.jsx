@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useData } from '../context/DataContext';
 import {
     CheckCircle2,
     ChevronDown,
@@ -18,8 +19,38 @@ import { destinationsData } from '../data/destinationsData';
 
 const DestinationDetail = () => {
     const { id } = useParams();
-    const destination = destinationsData[id];
+    const { countries } = useData();
     const [openFaq, setOpenFaq] = useState(0);
+
+    // Find country in context first
+    const contextCountry = countries.find(c => c.id === id);
+    // Find hardcoded data as fallback for detailed fields
+    const hardcodedData = destinationsData[id];
+
+    // Merge logic: use context for basic info, hardcoded for detailed fields if context lacks them
+    const destination = contextCountry ? {
+        ...hardcodedData, // Fallback fields (faqs, checklist, etc.)
+        name: contextCountry.name,
+        image: contextCountry.image,
+        benefits: contextCountry.benefits && contextCountry.benefits.length > 0 ? contextCountry.benefits : (hardcodedData?.benefits || []),
+        description: contextCountry.description,
+        students: contextCountry.students,
+        rating: contextCountry.rating,
+        // Ensure some defaults if hardcoded is missing
+        whyChoose: contextCountry.description || hardcodedData?.whyChoose || `Study in ${contextCountry.name} for a world-class education experience.`,
+        contentImage: contextCountry.image || hardcodedData?.contentImage || contextCountry.image,
+        checklist: hardcodedData?.checklist || [
+            'Original Passport',
+            'Academic Documents',
+            'English Proficiency Test',
+            'Financial Evidence',
+            'SOP & Recommendations'
+        ],
+        faqs: hardcodedData?.faqs || [
+            { q: 'What are the main requirements?', a: 'High school or university transcripts, English proficiency test (IELTS/PTE), and financial documentation.' },
+            { q: 'How long is the visa process?', a: 'Typically takes 4-8 weeks depending on the time of year and specific country regulations.' }
+        ]
+    } : hardcodedData;
 
     // Scroll to top on mount
     useEffect(() => {
@@ -64,7 +95,7 @@ const DestinationDetail = () => {
                                 <span className="text-gold">Study In {destination.name}?</span>
                             </h2>
                             <img
-                                src={destination.contentImage}
+                                src={destination.contentImage || destination.image}
                                 alt={`Study in ${destination.name}`}
                                 className="w-full h-[250px] md:h-[400px] object-cover rounded-[2rem] md:rounded-[3rem] shadow-2xl"
                             />
@@ -147,7 +178,7 @@ const DestinationDetail = () => {
                                     <h5 className="text-xl font-black mb-4 flex items-center gap-3">
                                         International <br /> Students
                                     </h5>
-                                    <p className="text-xs text-gray-400 font-medium">Over 500,000+ students choose {destination.name} every year for high quality education.</p>
+                                    <p className="text-xs text-gray-400 font-medium">Over {destination.students || '500,000+'} students choose {destination.name} every year for high quality education.</p>
                                 </div>
                                 <div className="bg-gold p-8 rounded-[2rem] text-navy">
                                     <h5 className="text-xl font-black mb-4 flex items-center gap-3">

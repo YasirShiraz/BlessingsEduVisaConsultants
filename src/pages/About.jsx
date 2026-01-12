@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
 import { ShieldCheck, Target, Users, Award, CheckCircle2, Globe2, Heart, Zap } from 'lucide-react';
+import { useData } from '../context/DataContext';
 
 const About = () => {
-    const stats = [
-        { label: 'Success Rate', value: '99.8%', icon: ShieldCheck },
-        { label: 'Students Placed', value: '5000+', icon: Users },
-        { label: 'Partner Universities', value: '500+', icon: Award },
-        { label: 'Countries', value: '25+', icon: Globe2 },
+    const { stats } = useData();
+    const statsList = [
+        { label: 'Success Rate', value: stats.find(s => s.key === 'visa_success')?.value || '99.8%', icon: ShieldCheck },
+        { label: 'Students Placed', value: stats.find(s => s.key === 'satisfied_students')?.value || '5000+', icon: Users },
+        { label: 'Partner Universities', value: stats.find(s => s.key === 'universities')?.value || '500+', icon: Award },
+        { label: 'Countries', value: stats.find(s => s.key === 'countries')?.value || '25+', icon: Globe2 },
     ];
 
     const values = [
@@ -52,22 +54,19 @@ const About = () => {
             {/* Stats Section */}
             <section className="py-12 md:py-20 bg-gray-50 border-y border-gray-100">
                 <div className="container-custom px-4 md:px-6">
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-                        {stats.map((stat, i) => {
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+                        {statsList.map((stat, index) => {
                             const Icon = stat.icon;
                             return (
                                 <motion.div
-                                    key={i}
+                                    key={index}
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: i * 0.1 }}
+                                    transition={{ delay: index * 0.1 }}
                                     className="text-center group"
                                 >
                                     <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-white shadow-lg border border-gray-100 text-gold mb-4 md:mb-6 group-hover:bg-gold group-hover:text-white transition-all transform group-hover:-translate-y-2">
-                                        {(() => {
-                                            const Icon = stat.icon;
-                                            return <Icon size={24} md:size={32} />;
-                                        })()}
+                                        <Icon size={24} md:size={32} />
                                     </div>
                                     <h3 className="text-2xl md:text-4xl font-black text-navy mb-1 md:mb-2">{stat.value}</h3>
                                     <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px] md:text-xs">{stat.label}</p>
@@ -159,10 +158,7 @@ const About = () => {
                                     className="bg-white p-8 md:p-10 rounded-[2.5rem] md:rounded-[3rem] shadow-lg border border-gray-100 flex flex-col items-center text-center group hover:shadow-2xl transition-all"
                                 >
                                     <div className={`w-16 h-16 md:w-20 md:h-20 ${v.bg} ${v.color} rounded-[1.5rem] md:rounded-3xl flex items-center justify-center mb-6 md:mb-8 group-hover:scale-110 transition-transform`}>
-                                        {(() => {
-                                            const Icon = v.icon;
-                                            return <Icon size={32} md:size={40} />;
-                                        })()}
+                                        <Icon size={32} md:size={40} />
                                     </div>
                                     <h4 className="text-xl md:text-2xl font-bold text-navy mb-3 md:mb-4">{v.title}</h4>
                                     <p className="text-sm md:text-base text-gray-500 font-medium leading-relaxed">{v.desc}</p>

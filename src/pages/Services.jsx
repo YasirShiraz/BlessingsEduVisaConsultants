@@ -29,8 +29,8 @@ const Services = () => {
             title: 'University Admissions',
             desc: 'Direct representation with 500+ universities. We help you find the best scholarships and placements.',
             icon: GraduationCap,
-            color: 'text-gold-dark',
-            bg: 'bg-gold/10'
+            color: 'text-brandgreen',
+            bg: 'bg-brandgreen/10'
         },
         {
             title: 'Visa Assistance',
@@ -67,14 +67,14 @@ const Services = () => {
             {/* Header */}
             <div className="bg-navy py-12 md:py-24 relative overflow-hidden">
                 <div className="absolute inset-0 z-0">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-gold/5 rounded-full blur-[80px] md:blur-[120px]"></div>
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-brandgreen/5 rounded-full blur-[80px] md:blur-[120px]"></div>
                 </div>
                 <div className="container-custom relative z-10 px-4 md:px-6 text-center">
                     <motion.div
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                     >
-                        <h1 className="text-4xl md:text-7xl font-black text-white mb-4 md:mb-6 leading-tight">Our Premium <br className="hidden md:block" /><span className="text-gold">Services</span></h1>
+                        <h1 className="text-4xl md:text-7xl font-black text-white mb-4 md:mb-6 leading-tight">Our Premium <br className="hidden md:block" /><span className="text-brandgreen">Services</span></h1>
                         <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto font-medium leading-relaxed">From your first counseling session to your flight abroad, we manage everything so you can focus on your future.</p>
                     </motion.div>
                 </div>
@@ -120,13 +120,13 @@ const Services = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         className="space-y-6 md:space-y-8 text-center md:text-left"
                     >
-                        <h2 className="text-3xl md:text-5xl font-black text-navy leading-tight">Every Detail <br className="hidden md:block" /><span className="text-gold">Taken Care Of.</span></h2>
+                        <h2 className="text-3xl md:text-5xl font-black text-navy leading-tight">Every Detail <br className="hidden md:block" /><span className="text-brandgreen">Taken Care Of.</span></h2>
                         <p className="text-base md:text-xl text-gray-500 font-medium leading-relaxed">We don't just stop at admissions. Our comprehensive support system covers every aspect of your international journey.</p>
                         <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
                             {additionalSteps.map((step, i) => (
-                                <div key={i} className="flex items-center gap-3 p-4 rounded-xl md:rounded-2xl bg-white shadow-sm border border-gray-100 hover:border-gold transition-colors group">
-                                    <CheckCircle2 className="text-gold shrink-0" size={20} md:size={24} />
-                                    <span className="font-bold text-navy text-sm md:text-base group-hover:text-gold transition-colors">{step}</span>
+                                <div key={i} className="flex items-center gap-3 p-4 rounded-xl md:rounded-2xl bg-white shadow-sm border border-gray-100 hover:border-brandgreen transition-colors group">
+                                    <CheckCircle2 className="text-brandgreen shrink-0" size={20} md:size={24} />
+                                    <span className="font-bold text-navy text-sm md:text-base group-hover:text-brandgreen transition-colors">{step}</span>
                                 </div>
                             ))}
                         </div>
@@ -141,7 +141,7 @@ const Services = () => {
                         </div>
                         <div className="relative z-10 space-y-8 md:space-y-10 text-center md:text-left">
                             <div className="flex flex-col md:flex-row items-center md:items-center gap-4">
-                                <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white/10 flex items-center justify-center text-gold border border-white/5">
+                                <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white/10 flex items-center justify-center text-brandgreen border border-white/5">
                                     <Users size={28} md:size={32} />
                                 </div>
                                 <div className="text-center md:text-left">
