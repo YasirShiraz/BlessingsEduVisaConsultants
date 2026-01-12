@@ -8,7 +8,7 @@ import { useData } from '../context/DataContext';
 
 const Apply = () => {
     const { user, loginWithGoogle } = useAuth();
-    const { addApplication } = useData();
+    const { addApplication, countries } = useData();
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -223,11 +223,9 @@ const Apply = () => {
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-gold focus:border-transparent outline-none transition-all appearance-none bg-white"
                                         >
                                             <option value="">Select a country</option>
-                                            <option value="uk">United Kingdom</option>
-                                            <option value="canada">Canada</option>
-                                            <option value="australia">Australia</option>
-                                            <option value="usa">USA</option>
-                                            <option value="europe">Europe</option>
+                                            {countries.map(c => (
+                                                <option key={c.id} value={c.name}>{c.name}</option>
+                                            ))}
                                         </select>
                                     </div>
                                     <div>
@@ -285,7 +283,7 @@ const Apply = () => {
                                     <div className="bg-lightgray p-6 rounded-2xl text-left space-y-2">
                                         <p><span className="font-bold text-navy">Name:</span> {formData.fullName || 'Not provided'}</p>
                                         <p><span className="font-bold text-navy">Email:</span> {formData.email || 'Not provided'}</p>
-                                        <p><span className="font-bold text-navy">Destination:</span> {formData.destination.toUpperCase() || 'Not selected'}</p>
+                                        <p><span className="font-bold text-navy">Destination:</span> {formData.destination || 'Not selected'}</p>
                                     </div>
                                 </div>
                             )}

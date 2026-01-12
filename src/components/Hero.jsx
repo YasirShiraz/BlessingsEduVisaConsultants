@@ -7,11 +7,11 @@ import { useData } from '../context/DataContext';
 const Hero = () => {
     const { stats } = useData();
     return (
-        <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-navy">
+        <section className="relative min-h-[85vh] md:min-h-[92vh] flex items-center overflow-hidden bg-navy">
             {/* Background Decorative Elements */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-[10%] right-[10%] w-[600px] h-[600px] bg-gold/5 rounded-full blur-[150px] animate-pulse"></div>
-                <div className="absolute bottom-[10%] left-[5%] w-[400px] h-[400px] bg-gold/10 rounded-full blur-[120px]"></div>
+                <div className="absolute top-[10%] right-[10%] w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-gold/5 rounded-full blur-[100px] md:blur-[150px] animate-pulse"></div>
+                <div className="absolute bottom-[10%] left-[5%] w-[200px] md:w-[400px] h-[200px] md:h-[400px] bg-gold/10 rounded-full blur-[80px] md:blur-[120px]"></div>
             </div>
 
             <div className="container-custom relative z-10 grid lg:grid-cols-2 gap-10 md:gap-16 items-center">
@@ -19,7 +19,7 @@ const Hero = () => {
                     initial={{ opacity: 0, x: -60 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="text-white space-y-6 md:space-y-8 py-8 md:py-12"
+                    className="text-white space-y-6 md:space-y-8 py-6 md:py-12"
                 >
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -34,7 +34,7 @@ const Hero = () => {
                         AUTHORIZED GLOBAL PARTNER
                     </motion.div>
 
-                    <h1 className="text-4xl sm:text-6xl md:text-8xl font-black leading-[1.1] md:leading-[1.05] tracking-tight">
+                    <h1 className="text-3xl sm:text-5xl md:text-8xl font-black leading-[1.15] md:leading-[1.05] tracking-tight">
                         Design Your <br />
                         <span className="text-brandgreen bg-clip-text">Global Future</span>
                     </h1>
@@ -74,7 +74,7 @@ const Hero = () => {
                         </div>
                         <div className="hidden md:block">
                             <p className="text-4xl font-black text-white">
-                                {stats.find(s => s.key === 'years')?.value || '15+'}
+                                {stats.find(s => s.key === 'years')?.value || '5+'}
                             </p>
                             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">
                                 {stats.find(s => s.key === 'years')?.label || 'Years XP'}

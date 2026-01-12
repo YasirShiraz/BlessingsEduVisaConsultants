@@ -23,17 +23,17 @@ const Navbar = () => {
 
     return (
         <nav className="bg-white/80 backdrop-blur-xl shadow-[0_5px_30px_rgba(0,0,0,0.05)] sticky top-0 z-[100] border-b border-gray-100">
-            <div className="max-w-7xl mx-auto px-6 lg:px-12">
-                <div className="flex justify-between items-center h-24">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-12">
+                <div className="flex justify-between items-center h-20 md:h-24">
                     <Link to="/" className="flex items-center gap-3 group">
                         <div className="bg-white p-1 rounded-xl group-hover:scale-105 transition-transform duration-300 shadow-sm border border-gray-100">
                             <img src={logo} alt="Blessings EduVisa" className="w-12 h-12 md:w-14 md:h-14 object-contain" />
                         </div>
                         <div className="flex flex-col">
-                            <span className="font-black text-2xl tracking-tighter text-navy leading-none">
+                            <span className="font-black text-xl md:text-2xl tracking-tighter text-navy leading-none">
                                 Blessings <span className="text-brandgreen">EduVisa</span>
                             </span>
-                            <span className="text-[10px] uppercase tracking-[0.2em] font-black text-gray-400 mt-1">Consultants</span>
+                            <span className="text-[8px] md:text-[10px] uppercase tracking-[0.2em] font-black text-gray-400 mt-0.5 md:mt-1">Consultants</span>
                         </div>
                     </Link>
 

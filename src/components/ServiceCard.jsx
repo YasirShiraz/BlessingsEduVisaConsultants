@@ -7,7 +7,7 @@ const ServiceCard = ({ title, description, desc, icon: Icon }) => {
     return (
         <motion.div
             whileHover={{ y: -10 }}
-            className="bg-white p-10 rounded-[2.5rem] shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-500 h-full group"
+            className="bg-white p-6 md:p-10 rounded-[2.5rem] shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-500 h-full group"
         >
             <div className="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center mb-8 text-navy group-hover:bg-brandgreen group-hover:text-navy transition-all duration-300 shadow-sm border border-gray-50">
                 {(() => {

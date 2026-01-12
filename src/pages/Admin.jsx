@@ -75,7 +75,7 @@ const Admin = () => {
     const dashboardStats = [
         { label: 'Total Applications', value: applications.length, icon: FileText, change: '+12.5%', color: 'from-blue-500 to-blue-600' },
         { label: 'Successful Visas', value: stats.find(s => s.key === 'visa_success')?.value || '98%', icon: TrendingUp, change: '+2.1%', color: 'from-emerald-500 to-emerald-600' },
-        { label: 'Active Students', value: stats.find(s => s.key === 'satisfied_students')?.value || '850', icon: Users, change: '+5.4%', color: 'from-gold to-orange-500' },
+        { label: 'Active Students', value: stats.find(s => s.key === 'satisfied_students')?.value || '500', icon: Users, change: '+5.4%', color: 'from-gold to-orange-500' },
         { label: 'Global Partners', value: stats.find(s => s.key === 'partners')?.value || '120+', icon: Globe2, change: '+8', color: 'from-indigo-500 to-purple-600' }
     ];
 
@@ -296,8 +296,8 @@ const Admin = () => {
                                                     <td className="px-10 py-7 text-sm font-bold text-gray-600 uppercase tracking-wide">{app.destination}</td>
                                                     <td className="px-10 py-7">
                                                         <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase border ${app.status === 'Approved' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
-                                                                app.status === 'Pending' ? 'bg-amber-50 text-amber-600 border-amber-100' :
-                                                                    'bg-blue-50 text-blue-600 border-blue-100'
+                                                            app.status === 'Pending' ? 'bg-amber-50 text-amber-600 border-amber-100' :
+                                                                'bg-blue-50 text-blue-600 border-blue-100'
                                                             }`}>
                                                             {app.status}
                                                         </span>

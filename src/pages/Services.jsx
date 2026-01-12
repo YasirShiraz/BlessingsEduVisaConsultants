@@ -69,7 +69,7 @@ const Services = () => {
                 <div className="absolute inset-0 z-0">
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-brandgreen/5 rounded-full blur-[80px] md:blur-[120px]"></div>
                 </div>
-                <div className="container-custom relative z-10 px-4 md:px-6 text-center">
+                <div className="container-custom relative z-10 text-center">
                     <motion.div
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -81,7 +81,7 @@ const Services = () => {
             </div>
 
             {/* Main Services Grid */}
-            <div className="section-padding container-custom px-4 md:px-6">
+            <div className="section-padding container-custom">
                 <div className="grid lg:grid-cols-2 gap-8 md:gap-12">
                     {mainServices.map((service, index) => {
                         const Icon = service.icon;

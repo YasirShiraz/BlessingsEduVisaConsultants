@@ -23,9 +23,9 @@ const DestinationDetail = () => {
     const [openFaq, setOpenFaq] = useState(0);
 
     // Find country in context first
-    const contextCountry = countries.find(c => c.id === id);
+    const contextCountry = countries.find(c => c.id.toString() === id);
     // Find hardcoded data as fallback for detailed fields
-    const hardcodedData = destinationsData[id];
+    const hardcodedData = contextCountry ? (destinationsData[contextCountry.name.toLowerCase().replace(/\s+/g, '-')] || destinationsData[contextCountry.code.toLowerCase()]) : null;
 
     // Merge logic: use context for basic info, hardcoded for detailed fields if context lacks them
     const destination = contextCountry ? {
@@ -84,7 +84,7 @@ const DestinationDetail = () => {
                 </div>
             </section>
 
-            <div className="container-custom py-20 px-6">
+            <div className="container-custom py-16 md:py-20">
                 <div className="flex flex-col lg:flex-row gap-16">
                     {/* Main Content (Left) */}
                     <div className="lg:w-2/3 space-y-16">
@@ -92,7 +92,7 @@ const DestinationDetail = () => {
                         <div className="space-y-6 md:space-y-10">
                             <h2 className="text-3xl md:text-5xl font-black text-navy leading-tight text-center md:text-left">
                                 Why Choose To <br className="hidden md:block" />
-                                <span className="text-gold">Study In {destination.name}?</span>
+                                <span className="text-brandgreen">Study In {destination.name}?</span>
                             </h2>
                             <img
                                 src={destination.contentImage || destination.image}
@@ -105,8 +105,8 @@ const DestinationDetail = () => {
 
                             <div className="grid md:grid-cols-2 gap-6">
                                 {destination.benefits.map((benefit, i) => (
-                                    <div key={i} className="flex gap-4 items-start bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:border-gold transition-colors">
-                                        <div className="w-8 h-8 rounded-lg bg-gold/10 flex items-center justify-center text-gold">
+                                    <div key={i} className="flex gap-4 items-start bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:border-brandgreen transition-colors">
+                                        <div className="w-8 h-8 rounded-lg bg-brandgreen/10 flex items-center justify-center text-brandgreen">
                                             <ShieldCheck size={20} />
                                         </div>
                                         <p className="font-bold text-navy leading-tight">{benefit}</p>
@@ -118,7 +118,7 @@ const DestinationDetail = () => {
                         {/* FAQ Section */}
                         <div className="space-y-6 md:space-y-10">
                             <div className="flex justify-center md:justify-start">
-                                <div className="bg-gold/10 inline-block px-6 md:px-8 py-2 md:py-3 rounded-full">
+                                <div className="bg-brandgreen/10 inline-block px-6 md:px-8 py-2 md:py-3 rounded-full">
                                     <h3 className="text-navy font-black text-lg md:text-xl uppercase tracking-widest text-center">Frequently Asked Questions</h3>
                                 </div>
                             </div>
@@ -158,13 +158,13 @@ const DestinationDetail = () => {
                     <div className="lg:w-1/3 space-y-8">
                         {/* Checklist */}
                         <div className="bg-white rounded-[2.5rem] shadow-2xl border border-gray-100 overflow-hidden sticky top-32">
-                            <div className="bg-gold py-6 text-center">
-                                <h4 className="text-navy font-black text-xl tracking-tight">Check List</h4>
+                            <div className="bg-brandgreen py-6 text-center">
+                                <h4 className="text-white font-black text-xl tracking-tight">Check List</h4>
                             </div>
                             <div className="p-8 space-y-4">
                                 {destination.checklist.map((item, i) => (
                                     <div key={i} className="flex gap-4 items-center group">
-                                        <div className="w-6 h-6 rounded-full bg-gold/10 flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-white transition-all">
+                                        <div className="w-6 h-6 rounded-full bg-brandgreen/10 flex items-center justify-center text-brandgreen group-hover:bg-brandgreen group-hover:text-white transition-all">
                                             <CheckCircle2 size={14} />
                                         </div>
                                         <p className="text-sm font-bold text-navy/80">{item}</p>
@@ -180,11 +180,11 @@ const DestinationDetail = () => {
                                     </h5>
                                     <p className="text-xs text-gray-400 font-medium">Over {destination.students || '500,000+'} students choose {destination.name} every year for high quality education.</p>
                                 </div>
-                                <div className="bg-gold p-8 rounded-[2rem] text-navy">
+                                <div className="bg-brandgreen p-8 rounded-[2rem] text-white">
                                     <h5 className="text-xl font-black mb-4 flex items-center gap-3">
                                         Pakistani <br /> Students
                                     </h5>
-                                    <p className="text-xs text-navy/60 font-medium">Special scholarships and visa processing benefits available for Pakistani residents.</p>
+                                    <p className="text-xs text-white/60 font-medium">Special scholarships and visa processing benefits available for Pakistani residents.</p>
                                 </div>
                             </div>
                         </div>
@@ -193,16 +193,16 @@ const DestinationDetail = () => {
             </div>
 
             {/* Newsletter Subscription */}
-            <section className="container-custom px-4 md:px-6 mt-12 md:mt-20">
+            <section className="container-custom mt-12 md:mt-20">
                 <div className="bg-navy rounded-[3rem] md:rounded-[4rem] p-8 md:p-20 relative overflow-hidden flex flex-col items-center justify-between gap-8 md:gap-12">
                     <div className="absolute inset-0 opacity-5">
                         <Globe2 className="w-full h-full scale-150 rotate-12" />
                     </div>
                     <div className="relative z-10 w-full text-center md:text-left">
-                        <div className="bg-gold/20 inline-block px-4 py-1 rounded-lg mb-4 md:mb-6 text-gold text-[10px] md:text-xs font-black uppercase tracking-widest">Subscribe Newsletter</div>
+                        <div className="bg-brandgreen/20 inline-block px-4 py-1 rounded-lg mb-4 md:mb-6 text-brandgreen text-[10px] md:text-xs font-black uppercase tracking-widest">Subscribe Newsletter</div>
                         <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-3 md:mb-4">
                             Stay Updated On <br className="hidden md:block" />
-                            <span className="text-gold">Study Opportunities</span>
+                            <span className="text-brandgreen">Study Opportunities</span>
                         </h2>
                         <p className="text-sm md:text-base text-gray-400 font-medium">Join our community and get the latest updates about scholarships and visas.</p>
                     </div>
@@ -211,9 +211,9 @@ const DestinationDetail = () => {
                             <input
                                 type="email"
                                 placeholder="Enter your email address..."
-                                className="flex-grow bg-white/10 border border-white/10 rounded-xl md:rounded-2xl px-6 md:px-8 py-4 md:py-5 text-sm md:text-base text-white outline-none focus:border-gold transition-colors"
+                                className="flex-grow bg-white/10 border border-white/10 rounded-xl md:rounded-2xl px-6 md:px-8 py-4 md:py-5 text-sm md:text-base text-white outline-none focus:border-brandgreen transition-colors"
                             />
-                            <button className="bg-gold text-navy font-black px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl hover:bg-white transition-colors text-sm md:text-base uppercase">Subscribe</button>
+                            <button className="bg-brandgreen text-white font-black px-8 md:px-10 py-4 md:py-5 rounded-xl md:rounded-2xl hover:bg-white hover:text-navy transition-colors text-sm md:text-base uppercase">Subscribe</button>
                         </form>
                     </div>
                 </div>

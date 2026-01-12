@@ -15,9 +15,12 @@ const DestinationCard = ({ name, id, slug, image, students, rating }) => {
             {/* Image Layer */}
             <div className="absolute inset-0 z-0 scale-105 group-hover:scale-110 transition-transform duration-700">
                 <img
-                    src={image || "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=800"}
+                    src={image}
                     alt={name}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                        e.target.src = "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=800";
+                    }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/30 to-transparent"></div>
             </div>

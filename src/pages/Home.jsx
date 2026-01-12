@@ -167,7 +167,7 @@ const Home = () => {
                             </div>
                             <div className="bg-white p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] shadow-xl border border-gray-50 space-y-3 md:space-y-4">
                                 <Users size={32} className="md:w-10 md:h-10 text-navy" />
-                                <p className="text-2xl md:text-3xl font-black text-navy">{stats.find(s => s.key === 'satisfied_students')?.value || '850+'}</p>
+                                <p className="text-2xl md:text-3xl font-black text-navy">{stats.find(s => s.key === 'satisfied_students')?.value || '500+'}</p>
                                 <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Students</p>
                             </div>
                         </div>
@@ -200,7 +200,7 @@ const Home = () => {
                         </p>
                         <div className="flex justify-center md:justify-start gap-8 md:gap-10">
                             <div className="space-y-1 md:space-y-2 text-center md:text-left">
-                                <p className="text-2xl md:text-3xl font-black text-navy">{stats.find(s => s.key === 'years_excellence')?.value || '15+'}</p>
+                                <p className="text-2xl md:text-3xl font-black text-navy">{stats.find(s => s.key === 'years_excellence')?.value || '5+'}</p>
                                 <p className="text-[10px] md:text-xs font-black uppercase tracking-widest text-gold">Years Excellence</p>
                             </div>
                             <div className="space-y-1 md:space-y-2 text-center md:text-left">
@@ -231,7 +231,7 @@ const Home = () => {
             </section>
 
             {/* Destinations Snippet */}
-            <section className="section-padding container-custom px-6">
+            <section className="section-padding container-custom">
                 <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-10 md:mb-16 gap-6 md:gap-8">
                     <div className="space-y-3 md:space-y-4 text-center md:text-left">
                         <h2 className="text-3xl md:text-5xl font-black text-navy leading-tight">Top Choice <br className="hidden md:block" /><span className="text-gold">Destinations</span></h2>
@@ -332,7 +332,7 @@ const Home = () => {
             </section>
 
             {/* Contact Section */}
-            <section className="section-padding container-custom px-4 md:px-6">
+            <section className="section-padding container-custom">
                 <div className="bg-white rounded-[3rem] md:rounded-[4rem] shadow-2xl border border-gray-100 overflow-hidden flex flex-col lg:flex-row">
                     <div className="lg:w-[45%] bg-navy p-10 md:p-16 text-white relative flex flex-col justify-center">
                         <div className="absolute inset-0 opacity-[0.03]">
@@ -421,7 +421,7 @@ const Home = () => {
             </section>
 
             {/* Final CTA */}
-            <section className="container-custom px-4 md:px-6 mt-8 md:mt-12 mb-16 md:mb-20">
+            <section className="container-custom mt-8 md:mt-12 mb-16 md:mb-20">
                 <motion.div
                     initial={{ scale: 0.95, opacity: 0 }}
                     whileInView={{ scale: 1, opacity: 1 }}

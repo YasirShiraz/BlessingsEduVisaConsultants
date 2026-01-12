@@ -31,7 +31,7 @@ const About = () => {
                     <div className="absolute -bottom-12 md:-bottom-24 -right-12 md:-right-24 w-64 md:w-96 h-64 md:h-96 bg-gold/10 rounded-full blur-[80px] md:blur-[100px]"></div>
                 </div>
 
-                <div className="container-custom relative z-10 px-4 md:px-6 text-center">
+                <div className="container-custom relative z-10 text-center">
                     <motion.h1
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -53,7 +53,7 @@ const About = () => {
 
             {/* Stats Section */}
             <section className="py-12 md:py-20 bg-gray-50 border-y border-gray-100">
-                <div className="container-custom px-4 md:px-6">
+                <div className="container-custom">
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
                         {statsList.map((stat, index) => {
                             const Icon = stat.icon;
@@ -78,7 +78,7 @@ const About = () => {
             </section>
 
             {/* Mission & Vision */}
-            <section className="section-padding container-custom px-4 md:px-6">
+            <section className="section-padding container-custom">
                 <div className="grid lg:grid-cols-2 gap-12 md:gap-20 items-center">
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
@@ -139,7 +139,7 @@ const About = () => {
             </section>
 
             {/* Our Values Section */}
-            <section className="section-padding bg-gray-50 border-y border-gray-100 px-4 md:px-6">
+            <section className="section-padding bg-gray-50 border-y border-gray-100">
                 <div className="container-custom">
                     <div className="text-center mb-12 md:mb-16 space-y-4">
                         <h2 className="text-3xl md:text-5xl font-black text-navy leading-tight">The Core Values That <br className="hidden md:block" /><span className="text-gold">Drive Us</span></h2>
