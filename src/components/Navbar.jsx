@@ -4,20 +4,13 @@ import { Menu, X, GraduationCap, User, LogOut } from 'lucide-react';
 import logo from '../assets/logo_final.png';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../auth/useAuth';
+import { useData } from '../context/DataContext';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { user, loginWithGoogle, logout, isAdmin } = useAuth();
+    const { navLinks } = useData();
     const location = useLocation();
-
-    const navLinks = [
-        { name: 'Home', path: '/' },
-        { name: 'About', path: '/about' },
-        { name: 'Destinations', path: '/destinations' },
-        { name: 'Services', path: '/services' },
-        { name: 'Testimonials', path: '/testimonials' },
-        { name: 'Contact', path: '/contact' },
-    ];
 
     if (location.pathname === '/admin') return null;
 
@@ -139,7 +132,14 @@ const Navbar = () => {
                                     <div className="flex items-center justify-between bg-gray-50 p-4 rounded-2xl">
                                         <div className="flex items-center gap-3">
                                             <img src={user.photoURL} alt="" className="w-10 h-10 rounded-full border-2 border-white shadow-sm" />
-                                            <span className="font-bold text-navy truncate max-w-[120px]">{user.displayName}</span>
+                                            <div className="flex flex-col">
+                                                <span className="font-bold text-navy truncate max-w-[120px] text-sm">{user.displayName}</span>
+                                                {isAdmin && (
+                                                    <Link to="/admin" className="text-[10px] font-black uppercase tracking-widest text-gold hover:text-navy" onClick={() => setIsOpen(false)}>
+                                                        Go to Admin Panel
+                                                    </Link>
+                                                )}
+                                            </div>
                                         </div>
                                         <button onClick={logout} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
                                             <LogOut size={20} />

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, Mail, GraduationCap, ChevronRight, Globe2, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../auth/useAuth';
+import logo from '../assets/logo_final.png';
 
 const AdminLogin = () => {
     const [email, setEmail] = useState('');
@@ -46,10 +47,10 @@ const AdminLogin = () => {
                         className="relative z-10"
                     >
                         <div className="flex items-center gap-3 mb-8">
-                            <div className="bg-gold p-2 rounded-xl">
-                                <GraduationCap size={32} className="text-navy" />
+                            <div className="bg-white p-1 rounded-xl shadow-md border border-white/20">
+                                <img src={logo} alt="Logo" className="w-12 h-12 md:w-16 md:h-16 object-contain" />
                             </div>
-                            <span className="text-2xl font-black text-white">Blessings <span className="text-gold">EduVisa</span></span>
+                            <span className="text-2xl md:text-3xl font-black text-white">Blessings <span className="text-gold">EduVisa</span></span>
                         </div>
                         <h2 className="text-5xl font-black text-white leading-tight mb-6">
                             Global Access <br />
@@ -81,8 +82,8 @@ const AdminLogin = () => {
                         animate={{ opacity: 1, y: 0 }}
                     >
                         <div className="lg:hidden text-center mb-10">
-                            <div className="bg-navy p-3 rounded-2xl inline-block mb-4 shadow-lg">
-                                <GraduationCap size={40} className="text-gold" />
+                            <div className="bg-white p-2 rounded-2xl inline-block mb-4 shadow-xl border border-white/20">
+                                <img src={logo} alt="Logo" className="w-16 h-16 object-contain" />
                             </div>
                             <h1 className="text-3xl font-bold text-white">Admin Portal</h1>
                         </div>

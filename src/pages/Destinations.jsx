@@ -24,7 +24,7 @@ const Destinations = () => {
                     <motion.h1
                         initial={{ y: 30, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
-                        className="text-4xl md:text-8xl font-black mb-6 md:mb-8 leading-tight"
+                        className="text-4xl sm:text-5xl md:text-8xl font-black mb-6 md:mb-8 leading-tight tracking-tight"
                     >
                         Global <span className="text-brandgreen">Study Hubs</span>
                     </motion.h1>

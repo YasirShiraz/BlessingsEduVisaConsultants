@@ -27,49 +27,29 @@ import {
 import { Link } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import { db } from '../auth/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-
 const Home = () => {
-    const { stats, testimonials, countries, contact } = useData();
+    const { stats, testimonials, countries, contact, services, processSteps, addInquiry } = useData();
     const [testimonialIndex, setTestimonialIndex] = useState(0);
     const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const services = [
-        {
-            title: 'Career Counseling',
-            desc: 'Expert guidance to help you choose the right course and career path based on your passion.',
-            icon: Search
-        },
-        {
-            title: 'University Admissions',
-            desc: 'Comprehensive support in applying to top universities across the UK, USA, Canada, and Australia.',
-            icon: CheckCircle2
-        },
-        {
-            title: 'Visa Documentation',
-            desc: 'Flawless visa application management with professional filing and mock interview sessions.',
-            icon: FileText
-        },
-        {
-            title: 'Test Preparation',
-            desc: 'Specialized coaching for IELTS, PTE, and TOEFL to ensure you meet university standards.',
-            icon: BadgeCheck
-        }
-    ];
+    // Icon Mapping for Dynamic Data
+    const IconMap = {
+        Search: Search,
+        CheckCircle2: CheckCircle2,
+        FileText: FileText,
+        BadgeCheck: BadgeCheck,
+        ShieldCheck: ShieldCheck,
+        // Fallbacks
+        default: Search
+    };
 
     const handleContactSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            if (db) {
-                await addDoc(collection(db, "inquiries"), {
-                    ...contactForm,
-                    createdAt: serverTimestamp()
-                });
-            }
+            await addInquiry(contactForm);
             setIsSubmitted(true);
             setContactForm({ name: '', email: '', message: '' });
             setTimeout(() => setIsSubmitted(false), 5000);
@@ -80,12 +60,7 @@ const Home = () => {
         }
     };
 
-    const processSteps = [
-        { title: 'Counseling', desc: 'Identify your goals and select the best career path.', icon: Search },
-        { title: 'University Pick', desc: 'Find the institutions that match your budget and profile.', icon: CheckCircle2 },
-        { title: 'Application', desc: 'We handle your documents and admission process.', icon: FileText },
-        { title: 'Visa Success', desc: 'Expert visa filing and interview preparation.', icon: ShieldCheck }
-    ];
+
 
     return (
         <motion.div
@@ -111,9 +86,10 @@ const Home = () => {
                         </Link>
                     </div>
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {services.map((service, index) => (
-                            <ServiceCard key={index} {...service} />
-                        ))}
+                        {services?.map((service, index) => {
+                            const IconComponent = IconMap[service.icon] || IconMap.default;
+                            return <ServiceCard key={index} {...service} icon={IconComponent} />;
+                        })}
                     </div>
                 </div>
             </section>
@@ -130,8 +106,8 @@ const Home = () => {
                         <h2 className="text-3xl md:text-6xl font-black text-navy mb-8 md:mb-10 leading-tight text-center md:text-left">Why Students Trust <br className="hidden md:block" /><span className="text-brandgreen">Blessings EduVisa</span></h2>
                         <div className="space-y-8">
                             {[
-                                { title: `${stats.find(s => s.key === 'visa_success')?.value || '98%'} Visa Success Rate`, desc: 'Our expert documentation team ensures minimal rejection risk.' },
-                                { title: `${stats.find(s => s.key === 'universities')?.value || '1000+'} Partner Universities`, desc: 'Wide range of options across all major study destinations.' },
+                                { title: `${stats?.find(s => s.key === 'visa_success')?.value || '98%'} ${stats?.find(s => s.key === 'visa_success')?.label || 'Visa Success Rate'}`, desc: 'Our expert documentation team ensures minimal rejection risk.' },
+                                { title: `${stats?.find(s => s.key === 'universities')?.value || '1000+'} ${stats?.find(s => s.key === 'universities')?.label || 'Partner Universities'}`, desc: 'Wide range of options across all major study destinations.' },
                                 { title: 'Free Career Consultation', desc: 'Personalized sessions to map out your academic journey.' },
                                 { title: 'No Hidden Charges', desc: 'Transparent process with clear communication on all costs.' }
                             ].map((item, i) => (
@@ -162,20 +138,20 @@ const Home = () => {
                         <div className="space-y-4 md:space-y-6 pt-6 md:pt-12">
                             <div className="bg-navy p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] text-white shadow-2xl space-y-3 md:space-y-4">
                                 <Globe2 size={32} className="md:w-10 md:h-10 text-gold" />
-                                <p className="text-2xl md:text-3xl font-black">{stats.find(s => s.key === 'countries')?.value || '40+'}</p>
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Countries</p>
+                                <p className="text-2xl md:text-3xl font-black">{stats?.find(s => s.key === 'countries')?.value || '40+'}</p>
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{stats?.find(s => s.key === 'countries')?.label || 'Countries'}</p>
                             </div>
                             <div className="bg-white p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] shadow-xl border border-gray-50 space-y-3 md:space-y-4">
                                 <Users size={32} className="md:w-10 md:h-10 text-navy" />
-                                <p className="text-2xl md:text-3xl font-black text-navy">{stats.find(s => s.key === 'satisfied_students')?.value || '500+'}</p>
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Students</p>
+                                <p className="text-2xl md:text-3xl font-black text-navy">{stats?.find(s => s.key === 'satisfied_students')?.value || '500+'}</p>
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{stats?.find(s => s.key === 'satisfied_students')?.label || 'Students'}</p>
                             </div>
                         </div>
                         <div className="space-y-4 md:space-y-6">
                             <div className="bg-white p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] shadow-xl border border-gray-50 space-y-3 md:space-y-4">
                                 <BarChart3 size={32} className="md:w-10 md:h-10 text-navy" />
-                                <p className="text-2xl md:text-3xl font-black text-navy">{stats.find(s => s.key === 'success_stories')?.value || '200+'}</p>
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Visa Rate</p>
+                                <p className="text-2xl md:text-3xl font-black text-navy">{stats?.find(s => s.key === 'success_stories')?.value || '200+'}</p>
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">{stats?.find(s => s.key === 'success_stories')?.label || 'Visa Success Stories'}</p>
                             </div>
                             <div className="bg-gold p-6 md:p-8 rounded-[2.5rem] md:rounded-[3rem] text-navy shadow-2xl space-y-3 md:space-y-4">
                                 <Headphones size={32} className="md:w-10 md:h-10 text-navy" />
@@ -200,12 +176,12 @@ const Home = () => {
                         </p>
                         <div className="flex justify-center md:justify-start gap-8 md:gap-10">
                             <div className="space-y-1 md:space-y-2 text-center md:text-left">
-                                <p className="text-2xl md:text-3xl font-black text-navy">{stats.find(s => s.key === 'years_excellence')?.value || '5+'}</p>
-                                <p className="text-[10px] md:text-xs font-black uppercase tracking-widest text-gold">Years Excellence</p>
+                                <p className="text-2xl md:text-3xl font-black text-navy">{stats?.find(s => s.key === 'years_excellence')?.value || '5+'}</p>
+                                <p className="text-[10px] md:text-xs font-black uppercase tracking-widest text-gold">{stats?.find(s => s.key === 'years_excellence')?.label || 'Years Excellence'}</p>
                             </div>
                             <div className="space-y-1 md:space-y-2 text-center md:text-left">
-                                <p className="text-2xl md:text-3xl font-black text-navy">{stats.find(s => s.key === 'universities')?.value || '1000+'}</p>
-                                <p className="text-[10px] md:text-xs font-black uppercase tracking-widest text-gold">Global Partners</p>
+                                <p className="text-2xl md:text-3xl font-black text-navy">{stats?.find(s => s.key === 'universities')?.value || '1000+'}</p>
+                                <p className="text-[10px] md:text-xs font-black uppercase tracking-widest text-gold">{stats?.find(s => s.key === 'universities')?.label || 'Global Partners'}</p>
                             </div>
                         </div>
                         <div className="flex justify-center md:justify-start">
@@ -242,7 +218,7 @@ const Home = () => {
                     </Link>
                 </div>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    {countries.slice(0, 3).map((dest, index) => (
+                    {countries?.slice(0, 3).map((dest, index) => (
                         <DestinationCard key={index} {...dest} />
                     ))}
                 </div>
@@ -263,13 +239,12 @@ const Home = () => {
                         {/* Connector Line */}
                         <div className="hidden md:block absolute top-[60px] left-0 w-full h-px bg-white/10 -z-0"></div>
 
-                        {processSteps.map((step, i) => (
+                        {processSteps?.map((step, i) => (
                             <div key={i} className="text-center space-y-4 md:space-y-6 group z-10">
                                 <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-navy-light text-gold border-4 border-white/5 mx-auto flex items-center justify-center text-3xl md:text-4xl shadow-2xl scale-110 md:scale-125 group-hover:border-gold transition-all duration-500 bg-navy relative">
                                     <span className="absolute -top-1 -right-1 md:-top-2 md:-right-2 w-8 h-8 md:w-10 md:h-10 rounded-full bg-gold text-navy text-xs md:text-sm font-black flex items-center justify-center border-4 border-navy">{i + 1}</span>
                                     {(() => {
-                                        const Icon = step.icon;
-                                        if (!Icon) return <Search size={32} />;
+                                        const Icon = IconMap[step.icon] || IconMap.default;
                                         return <Icon size={32} className="md:w-10 md:h-10" />;
                                     })()}
                                 </div>

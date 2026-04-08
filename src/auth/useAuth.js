@@ -8,7 +8,11 @@ import {
 } from 'firebase/auth';
 
 export const useAuth = () => {
-    const [user, setUser] = useState(null);
+    // Initialize from localStorage if present to survive refreshes
+    const [user, setUser] = useState(() => {
+        const savedUser = localStorage.getItem('local_admin_user');
+        return savedUser ? JSON.parse(savedUser) : null;
+    });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -17,8 +21,17 @@ export const useAuth = () => {
             return;
         }
         try {
-            const unsubscribe = onAuthStateChanged(auth, (user) => {
-                setUser(user);
+            const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+                if (firebaseUser) {
+                    setUser(firebaseUser);
+                    localStorage.removeItem('local_admin_user'); // Prefer Firebase user if active
+                } else {
+                    // Start: Persist fix - only clear if we don't have a local admin
+                    const localUser = localStorage.getItem('local_admin_user');
+                    if (!localUser) {
+                        setUser(null);
+                    }
+                }
                 setLoading(false);
             });
             return () => unsubscribe();
@@ -30,7 +43,6 @@ export const useAuth = () => {
 
     const loginWithGoogle = async () => {
         if (!auth) {
-            // Fallback to Demo Login for Local/Offline usage
             console.warn("Firebase not configured. Logging in as Demo User.");
             loginWithDemo();
             return;
@@ -43,17 +55,22 @@ export const useAuth = () => {
     };
 
     const loginWithEmail = async (email, password) => {
-        // Local Custom Credential Check
-        if (email === 'shahzib@gmail.com' && password === 'shahzab@123') {
+        console.log("Attempting login with:", email);
+
+        if (email.trim() === 'shahzib@gmail.com' && password.trim() === 'shahzaib@123') {
+            console.log("Local admin matched");
             const adminUser = {
                 uid: 'custom-admin',
-                email: 'shahzib@gmail.com', // Matches the isAdmin check expectation if updated
+                email: 'shahzib@gmail.com',
                 displayName: 'Shahzaib Admin',
                 photoURL: 'https://ui-avatars.com/api/?name=Shahzaib+Admin&background=random'
             };
             setUser(adminUser);
+            localStorage.setItem('local_admin_user', JSON.stringify(adminUser)); // Persist session
             setLoading(false);
             return;
+        } else {
+            console.log("Local creds did not match", email, password);
         }
 
         if (!auth) {
@@ -76,16 +93,19 @@ export const useAuth = () => {
             photoURL: 'https://ui-avatars.com/api/?name=Admin+User'
         };
         setUser(demoUser);
+        localStorage.setItem('local_admin_user', JSON.stringify(demoUser)); // Persist session
         setLoading(false);
     };
 
     const logout = async () => {
+        localStorage.removeItem('local_admin_user'); // Clear local session
         if (!auth) {
             setUser(null);
             return;
         }
         try {
             await signOut(auth);
+            setUser(null);
         } catch (error) {
             console.error("Logout Error:", error);
         }

@@ -5,7 +5,13 @@ import heroImg from '../assets/hero.png';
 import { useData } from '../context/DataContext';
 
 const Hero = () => {
-    const { stats } = useData();
+    const { stats, heroData } = useData();
+
+    // Default fallbacks if data hasn't loaded yet
+    const title = heroData?.title || 'Design Your Global Future';
+    const subtitle = heroData?.subtitle || 'Navigating the complexities of international admissions. From selecting the perfect university to securing your visa, we are with you at every step.';
+    const image = heroData?.image || heroImg;
+
     return (
         <section className="relative min-h-[85vh] md:min-h-[92vh] flex items-center overflow-hidden bg-navy">
             {/* Background Decorative Elements */}
@@ -34,13 +40,13 @@ const Hero = () => {
                         AUTHORIZED GLOBAL PARTNER
                     </motion.div>
 
-                    <h1 className="text-3xl sm:text-5xl md:text-8xl font-black leading-[1.15] md:leading-[1.05] tracking-tight">
-                        Design Your <br />
-                        <span className="text-brandgreen bg-clip-text">Global Future</span>
+                    <h1 className="text-4xl sm:text-5xl md:text-8xl font-black leading-[1.10] md:leading-[1.05] tracking-tight">
+                        {title.split(' ').slice(0, 2).join(' ')} <br />
+                        <span className="text-brandgreen bg-clip-text">{title.split(' ').slice(2).join(' ')}</span>
                     </h1>
 
                     <p className="text-lg md:text-xl text-gray-400 max-w-xl leading-relaxed font-medium">
-                        Navigating the complexities of international admissions. From selecting the perfect university to securing your visa, we are with you at every step.
+                        {subtitle}
                     </p>
 
                     <div className="flex flex-wrap gap-4 md:gap-5 pt-2 md:pt-4">
@@ -74,10 +80,10 @@ const Hero = () => {
                         </div>
                         <div className="hidden md:block">
                             <p className="text-4xl font-black text-white">
-                                {stats.find(s => s.key === 'years')?.value || '5+'}
+                                {stats.find(s => s.key === 'years_excellence')?.value || '5+'}
                             </p>
                             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">
-                                {stats.find(s => s.key === 'years')?.label || 'Years XP'}
+                                {stats.find(s => s.key === 'years_excellence')?.label || 'Years XP'}
                             </p>
                         </div>
                     </div>
@@ -94,7 +100,7 @@ const Hero = () => {
                         <div className="absolute -inset-4 bg-gold/30 rounded-[3rem] blur-2xl group-hover:bg-gold/40 transition-all duration-500 opacity-50"></div>
                         <div className="relative z-10 rounded-[2.5rem] overflow-hidden border-8 border-white/5 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] bg-navy-light">
                             <img
-                                src={heroImg}
+                                src={image}
                                 alt="Global Education"
                                 className="w-full h-full object-cover aspect-[4/5] scale-105 group-hover:scale-110 transition-transform duration-700"
                             />

@@ -74,7 +74,7 @@ const Services = () => {
                         initial={{ y: 20, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                     >
-                        <h1 className="text-4xl md:text-7xl font-black text-white mb-4 md:mb-6 leading-tight">Our Premium <br className="hidden md:block" /><span className="text-brandgreen">Services</span></h1>
+                        <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white mb-4 md:mb-6 leading-tight tracking-tight">Our Premium <br className="hidden md:block" /><span className="text-brandgreen">Services</span></h1>
                         <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto font-medium leading-relaxed">From your first counseling session to your flight abroad, we manage everything so you can focus on your future.</p>
                     </motion.div>
                 </div>
