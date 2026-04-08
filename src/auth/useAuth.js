@@ -57,11 +57,11 @@ export const useAuth = () => {
     const loginWithEmail = async (email, password) => {
         console.log("Attempting login with:", email);
 
-        if (email.trim() === 'shahzib@gmail.com' && password.trim() === 'shahzaib@123') {
+        if (email.trim() === 'shahzaib@gmail.com' && password.trim() === 'shahzaib@123') {
             console.log("Local admin matched");
             const adminUser = {
                 uid: 'custom-admin',
-                email: 'shahzib@gmail.com',
+                email: 'shahzaib@gmail.com',
                 displayName: 'Shahzaib Admin',
                 photoURL: 'https://ui-avatars.com/api/?name=Shahzaib+Admin&background=random'
             };
@@ -113,7 +113,7 @@ export const useAuth = () => {
 
     const isAdmin = user && (
         user.email === 'admin@blessingseduvisa.com' ||
-        user.email === 'shahzib@gmail.com'
+        user.email === 'shahzaib@gmail.com'
     );
 
     return {
