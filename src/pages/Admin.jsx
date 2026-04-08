@@ -30,7 +30,8 @@ import {
     Star,
     Quote,
     Image as ImageIcon,
-    Target
+    Target,
+    Lock
 } from 'lucide-react';
 
 const Admin = () => {
@@ -63,6 +64,8 @@ const Admin = () => {
         addNavLink,
         removeNavLink,
         updateNavLink,
+        adminCredentials,
+        updateAdminCredentials,
         resetToDefaults
     } = useData();
     const { user, logout } = useAuth();
@@ -110,6 +113,25 @@ const Admin = () => {
 
     // Stats Local State
     const [localStats, setLocalStats] = useState([]);
+
+    // Admin Security State
+    const [securityForm, setSecurityForm] = useState({ email: 'shahzaib@gmail.com', password: 'shahzaib@123' });
+
+    useEffect(() => {
+        if (adminCredentials) {
+            setSecurityForm(adminCredentials);
+        }
+    }, [adminCredentials]);
+
+    const handleUpdateSecurity = (e) => {
+        e.preventDefault();
+        if (securityForm.email && securityForm.password) {
+            updateAdminCredentials(securityForm.email, securityForm.password);
+            alert('Admin Login Credentials Updated! Please use these next time you log in.');
+        } else {
+            alert('Email and password cannot be empty!');
+        }
+    };
 
     useEffect(() => {
         if (heroData) {
@@ -718,7 +740,8 @@ const Admin = () => {
                             )}
 
                             {contentTab === 'misc' && (
-                                <div className="grid lg:grid-cols-2 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                <>
+                                    <div className="grid lg:grid-cols-2 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                                     <section className="bg-white p-10 rounded-[3rem] shadow-sm border border-gray-100">
                                         <h3 className="text-xl font-black text-navy mb-10 flex items-center gap-3">
                                             <TrendingUp className="text-gold" /> Website Numbers
@@ -804,6 +827,46 @@ const Admin = () => {
                                         </div>
                                     </section>
                                 </div>
+
+                                {/* Security Settings */}
+                                <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                    <section className="bg-white p-10 rounded-[3rem] shadow-sm border border-gray-100">
+                                        <h3 className="text-xl font-black text-navy mb-8 flex items-center gap-3">
+                                            <Lock className="text-red-500" /> Admin Access Credentials
+                                        </h3>
+                                        <form onSubmit={handleUpdateSecurity} className="bg-red-50/50 p-8 rounded-[2rem] border border-red-100 space-y-6">
+                                            <div className="grid md:grid-cols-2 gap-6">
+                                                <div>
+                                                    <label className="text-[10px] font-black uppercase text-red-400 tracking-widest mb-2 block">Admin Login Email</label>
+                                                    <input
+                                                        type="email"
+                                                        value={securityForm.email}
+                                                        onChange={(e) => setSecurityForm({ ...securityForm, email: e.target.value })}
+                                                        className="w-full px-6 py-4 bg-white rounded-2xl border border-red-100 outline-none focus:border-red-400 focus:ring-4 focus:ring-red-50 transition-all font-bold text-navy"
+                                                        required
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="text-[10px] font-black uppercase text-red-400 tracking-widest mb-2 block">Admin Login Password</label>
+                                                    <input
+                                                        type="text"
+                                                        value={securityForm.password}
+                                                        onChange={(e) => setSecurityForm({ ...securityForm, password: e.target.value })}
+                                                        className="w-full px-6 py-4 bg-white rounded-2xl border border-red-100 outline-none focus:border-red-400 focus:ring-4 focus:ring-red-50 transition-all font-bold text-navy"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="flex justify-between items-center mt-6">
+                                                <p className="text-xs text-red-400 font-bold uppercase tracking-widest"><AlertCircle size={14} className="inline mr-1" /> Do not forget these details</p>
+                                                <button type="submit" className="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-xl font-black uppercase tracking-widest text-xs transition-all flex items-center gap-2">
+                                                    <Save size={16} /> Update Access
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </section>
+                                </div>
+                                </>
                             )}
 
                             {/* Testimonials Control */}

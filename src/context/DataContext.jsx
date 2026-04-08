@@ -203,6 +203,7 @@ export const DataProvider = ({ children }) => {
     const [processSteps, setProcessSteps] = useState(() => loadState('processSteps', defaultProcessSteps));
     const [heroData, setHeroData] = useState(() => loadState('heroData', defaultHero));
     const [navLinks, setNavLinks] = useState(() => loadState('navLinks', defaultNavLinks));
+    const [adminCredentials, setAdminCredentials] = useState(() => loadState('adminCredentials', { email: 'shahzaib@gmail.com', password: 'shahzaib@123' }));
 
     // Persist effects
     useEffect(() => localStorage.setItem('stats', JSON.stringify(stats)), [stats]);
@@ -215,6 +216,7 @@ export const DataProvider = ({ children }) => {
     useEffect(() => localStorage.setItem('processSteps', JSON.stringify(processSteps)), [processSteps]);
     useEffect(() => localStorage.setItem('heroData', JSON.stringify(heroData)), [heroData]);
     useEffect(() => localStorage.setItem('navLinks', JSON.stringify(navLinks)), [navLinks]);
+    useEffect(() => localStorage.setItem('adminCredentials', JSON.stringify(adminCredentials)), [adminCredentials]);
 
 
     // Firebase Sync Effect
@@ -266,6 +268,10 @@ export const DataProvider = ({ children }) => {
 
     const updateContact = (field, value) => {
         setContact(prev => ({ ...prev, [field]: value }));
+    };
+
+    const updateAdminCredentials = (email, password) => {
+        setAdminCredentials({ email, password });
     };
 
     const addApplication = (applicationData) => {
@@ -378,6 +384,8 @@ export const DataProvider = ({ children }) => {
             addNavLink,
             removeNavLink,
             updateNavLink,
+            adminCredentials,
+            updateAdminCredentials,
             resetToDefaults
         }}>
             {children}
