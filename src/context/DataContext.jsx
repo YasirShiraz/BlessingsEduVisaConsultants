@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { db } from '../auth/firebase';
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 
 const DataContext = createContext();
 
@@ -213,6 +215,32 @@ export const DataProvider = ({ children }) => {
     useEffect(() => localStorage.setItem('processSteps', JSON.stringify(processSteps)), [processSteps]);
     useEffect(() => localStorage.setItem('heroData', JSON.stringify(heroData)), [heroData]);
     useEffect(() => localStorage.setItem('navLinks', JSON.stringify(navLinks)), [navLinks]);
+
+
+    // Firebase Sync Effect
+    useEffect(() => {
+        if (!db) return;
+
+        console.log("Setting up Firebase listeners for admin applications...");
+        
+        try {
+            const q = query(collection(db, 'applications'), orderBy('createdAt', 'desc'));
+            const unsubscribeApps = onSnapshot(q, (snapshot) => {
+                const appsData = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                    date: doc.data().createdAt?.toDate().toLocaleDateString() || new Date().toLocaleDateString()
+                }));
+                setApplications(appsData);
+            }, (error) => {
+                console.warn("Firebase listener failed (falling back to local storage):", error);
+            });
+
+            return () => unsubscribeApps();
+        } catch (error) {
+             console.warn("Firebase query setup failed:", error);
+        }
+    }, []);
 
 
     // Update Functions (Synchronous Local Updates)
