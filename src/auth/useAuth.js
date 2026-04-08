@@ -1,87 +1,36 @@
-import { useState, useEffect } from 'react';
-import { auth, googleProvider } from './firebase';
-import {
-    onAuthStateChanged,
-    signInWithPopup,
-    signOut,
-    signInWithEmailAndPassword
-} from 'firebase/auth';
+import { useState } from 'react';
+
+// ✅ Fully Local Auth — No Firebase Required
+const ADMIN_CREDENTIALS = [
+    { email: 'shahzaib@gmail.com', password: 'shahzaib@123', displayName: 'Shahzaib Admin' },
+    { email: 'admin@blessingseduvisa.com', password: 'admin@123', displayName: 'Blessings Admin' },
+];
 
 export const useAuth = () => {
-    // Initialize from localStorage if present to survive refreshes
     const [user, setUser] = useState(() => {
         const savedUser = localStorage.getItem('local_admin_user');
         return savedUser ? JSON.parse(savedUser) : null;
     });
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        if (!auth) {
-            setLoading(false);
-            return;
-        }
-        try {
-            const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-                if (firebaseUser) {
-                    setUser(firebaseUser);
-                    localStorage.removeItem('local_admin_user'); // Prefer Firebase user if active
-                } else {
-                    // Start: Persist fix - only clear if we don't have a local admin
-                    const localUser = localStorage.getItem('local_admin_user');
-                    if (!localUser) {
-                        setUser(null);
-                    }
-                }
-                setLoading(false);
-            });
-            return () => unsubscribe();
-        } catch (error) {
-            console.error("Auth state changed error:", error);
-            setLoading(false);
-        }
-    }, []);
-
-    const loginWithGoogle = async () => {
-        if (!auth) {
-            console.warn("Firebase not configured. Logging in as Demo User.");
-            loginWithDemo();
-            return;
-        }
-        try {
-            await signInWithPopup(auth, googleProvider);
-        } catch (error) {
-            console.error("Google Login Error:", error);
-        }
-    };
+    const [loading, setLoading] = useState(false);
 
     const loginWithEmail = async (email, password) => {
-        console.log("Attempting login with:", email);
+        const matched = ADMIN_CREDENTIALS.find(
+            (cred) => cred.email.trim() === email.trim() && cred.password.trim() === password.trim()
+        );
 
-        if (email.trim() === 'shahzaib@gmail.com' && password.trim() === 'shahzaib@123') {
-            console.log("Local admin matched");
+        if (matched) {
             const adminUser = {
-                uid: 'custom-admin',
-                email: 'shahzaib@gmail.com',
-                displayName: 'Shahzaib Admin',
-                photoURL: 'https://ui-avatars.com/api/?name=Shahzaib+Admin&background=random'
+                uid: 'local-admin-' + Date.now(),
+                email: matched.email,
+                displayName: matched.displayName,
+                photoURL: `https://ui-avatars.com/api/?name=${encodeURIComponent(matched.displayName)}&background=random`
             };
             setUser(adminUser);
-            localStorage.setItem('local_admin_user', JSON.stringify(adminUser)); // Persist session
+            localStorage.setItem('local_admin_user', JSON.stringify(adminUser));
             setLoading(false);
-            return;
+            return adminUser;
         } else {
-            console.log("Local creds did not match", email, password);
-        }
-
-        if (!auth) {
-            console.warn("Firebase is not configured. Redirecting to local fallback.");
-            throw new Error("Firebase unavailable");
-        }
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-        } catch (error) {
-            console.error("Email Login Error:", error);
-            throw error;
+            throw new Error('Invalid credentials');
         }
     };
 
@@ -93,28 +42,21 @@ export const useAuth = () => {
             photoURL: 'https://ui-avatars.com/api/?name=Admin+User'
         };
         setUser(demoUser);
-        localStorage.setItem('local_admin_user', JSON.stringify(demoUser)); // Persist session
+        localStorage.setItem('local_admin_user', JSON.stringify(demoUser));
         setLoading(false);
     };
 
-    const logout = async () => {
-        localStorage.removeItem('local_admin_user'); // Clear local session
-        if (!auth) {
-            setUser(null);
-            return;
-        }
-        try {
-            await signOut(auth);
-            setUser(null);
-        } catch (error) {
-            console.error("Logout Error:", error);
-        }
+    const loginWithGoogle = () => {
+        console.warn('Google login not configured. Using demo login.');
+        loginWithDemo();
     };
 
-    const isAdmin = user && (
-        user.email === 'admin@blessingseduvisa.com' ||
-        user.email === 'shahzaib@gmail.com'
-    );
+    const logout = () => {
+        localStorage.removeItem('local_admin_user');
+        setUser(null);
+    };
+
+    const isAdmin = user && ADMIN_CREDENTIALS.some(c => c.email === user.email);
 
     return {
         user,
