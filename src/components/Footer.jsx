@@ -7,9 +7,9 @@ const Footer = () => {
     const { contact } = useData();
     return (
         <footer className="bg-navy text-white pt-12 md:pt-16 pb-8">
-            <div className="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12">
                 {/* Brand Section */}
-                <div className="space-y-4 md:space-y-6">
+                <div className="space-y-4 md:space-y-6 md:col-span-5 lg:col-span-4">
                     <Link to="/" className="flex items-center gap-2">
                         <div className="bg-white p-1 rounded-lg">
                             <img src={logo} alt="Blessings EduVisa" className="w-10 h-10 md:w-12 md:h-12 object-contain" />
@@ -30,29 +30,20 @@ const Footer = () => {
                 </div>
 
                 {/* Quick Links */}
-                <div>
+                <div className="md:col-span-3 lg:col-span-3 lg:col-start-6">
                     <h3 className="font-bold text-lg mb-6 text-gold">Quick Links</h3>
                     <ul className="space-y-4 text-gray-400">
-                        <li><Link to="/about" className="hover:text-white transition-colors">About Us</Link></li>
-                        <li><Link to="/destinations" className="hover:text-white transition-colors">Study Destinations</Link></li>
-                        <li><Link to="/services" className="hover:text-white transition-colors">Our Services</Link></li>
-                        <li><Link to="/apply" className="hover:text-white transition-colors">Apply Online</Link></li>
+                        <li><Link to="/about" className="hover:text-gold hover:translate-x-1 inline-block transition-all">About Us</Link></li>
+                        <li><Link to="/destinations" className="hover:text-gold hover:translate-x-1 inline-block transition-all">Study Destinations</Link></li>
+                        <li><Link to="/services" className="hover:text-gold hover:translate-x-1 inline-block transition-all">Our Services</Link></li>
+                        <li><Link to="/apply" className="hover:text-gold hover:translate-x-1 inline-block transition-all">Apply Online</Link></li>
                     </ul>
                 </div>
 
-                {/* Destinations */}
-                <div>
-                    <h3 className="font-bold text-lg mb-6 text-gold">Destinations</h3>
-                    <ul className="space-y-4 text-gray-400">
-                        <li><Link to="/destinations" className="hover:text-white transition-colors">UK Education</Link></li>
-                        <li><Link to="/destinations" className="hover:text-white transition-colors">Canada Study</Link></li>
-                        <li><Link to="/destinations" className="hover:text-white transition-colors">Australia Admission</Link></li>
-                        <li><Link to="/destinations" className="hover:text-white transition-colors">USA Universities</Link></li>
-                    </ul>
-                </div>
+
 
                 {/* Contact info */}
-                <div>
+                <div className="md:col-span-4 lg:col-span-4">
                     <h3 className="font-bold text-lg mb-6 text-gold">Contact Us</h3>
                     <ul className="space-y-4 text-gray-400">
                         <li className="flex items-start gap-3">
