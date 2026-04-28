@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { db } from '../auth/firebase';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import heroImg from '../assets/hero.png';
 
 const DataContext = createContext();
 
@@ -191,7 +192,7 @@ export const DataProvider = ({ children }) => {
     const defaultHero = {
         title: 'Design Your Global Future',
         subtitle: 'Navigating the complexities of international admissions. From selecting the perfect university to securing your visa, we are with you at every step.',
-        image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800'
+        image: heroImg
     };
 
     // Helper to load or use default
@@ -216,7 +217,14 @@ export const DataProvider = ({ children }) => {
     const [inquiries, setInquiries] = useState(() => loadState('inquiries', defaultInquiries));
     const [services, setServices] = useState(() => loadState('services', defaultServices));
     const [processSteps, setProcessSteps] = useState(() => loadState('processSteps', defaultProcessSteps));
-    const [heroData, setHeroData] = useState(() => loadState('heroData', defaultHero));
+    const [heroData, setHeroData] = useState(() => {
+        const saved = loadState('heroData', defaultHero);
+        if (saved && saved.image === 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800') {
+            localStorage.setItem('heroData', JSON.stringify(defaultHero));
+            return defaultHero;
+        }
+        return saved;
+    });
     const [navLinks, setNavLinks] = useState(() => loadState('navLinks', defaultNavLinks));
     const [adminCredentials, setAdminCredentials] = useState(() => loadState('adminCredentials', { email: 'shahzaib@gmail.com', password: 'shahzaib@123' }));
 
