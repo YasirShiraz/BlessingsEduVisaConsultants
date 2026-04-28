@@ -51,7 +51,7 @@ export const DataProvider = ({ children }) => {
             name: 'Germany',
             code: 'DE',
             flag: 'https://flagcdn.com/w80/de.png',
-            image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&q=80&w=800', // Neuschwanstein
+            image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&q=80&w=800',
             description: 'Engineering excellence with zero or low tuition fees at public universities.',
             students: '40k+',
             rating: '4.6',
@@ -70,17 +70,6 @@ export const DataProvider = ({ children }) => {
         },
         {
             id: '5',
-            name: 'Italy',
-            code: 'IT',
-            flag: 'https://flagcdn.com/w80/it.png',
-            image: 'https://images.unsplash.com/photo-1516483638261-f4085ee6b633?auto=format&fit=crop&q=80&w=800',
-            description: 'Rich in history and culture with some of the oldest universities in the world.',
-            students: '45k+',
-            rating: '4.6',
-            benefits: ['Historic universities', 'Rich culture', 'Affordable tuition']
-        },
-        {
-            id: '6',
             name: 'Cyprus',
             code: 'CY',
             flag: 'https://flagcdn.com/w80/cy.png',
@@ -91,29 +80,7 @@ export const DataProvider = ({ children }) => {
             benefits: ['Mediterranean climate', 'Affordable', 'English widely spoken']
         },
         {
-            id: '7',
-            name: 'Belgium',
-            code: 'BE',
-            flag: 'https://flagcdn.com/w80/be.png',
-            image: 'https://images.unsplash.com/photo-1520110120835-c96534a4c984?auto=format&fit=crop&q=80&w=800',
-            description: 'The heart of Europe, offering multicultural high-quality education and networking.',
-            students: '25k+',
-            rating: '4.7',
-            benefits: ['Heart of Europe', 'Multilingual', 'High academic standards']
-        },
-        {
-            id: '8',
-            name: 'Malta',
-            code: 'MT',
-            flag: 'https://flagcdn.com/w80/mt.png',
-            image: 'https://images.unsplash.com/photo-1514222026859-9f7e716ed5d4?auto=format&fit=crop&q=80&w=800',
-            description: 'A safe, English-speaking European destination with sunny weather all year.',
-            students: '10k+',
-            rating: '4.5',
-            benefits: ['English speaking', 'Safe environment', 'Sunny climate']
-        },
-        {
-            id: '9',
+            id: '6',
             name: 'Turkey',
             code: 'TR',
             flag: 'https://flagcdn.com/w80/tr.png',
@@ -124,70 +91,15 @@ export const DataProvider = ({ children }) => {
             benefits: ['Affordable tuition', 'Rich culture', 'Strategic location']
         },
         {
-            id: '10',
+            id: '7',
             name: 'Malaysia',
             code: 'MY',
             flag: 'https://flagcdn.com/w80/my.png',
-            image: 'https://images.unsplash.com/photo-1500041273356-3b388b7702bf?auto=format&fit=crop&q=80&w=800', // KL
+            image: 'https://images.unsplash.com/photo-1500041273356-3b388b7702bf?auto=format&fit=crop&q=80&w=800',
             description: 'Affordable education in a multicultural tropical paradise. Branch campuses of global top unis.',
             students: '25k+',
             rating: '4.5',
             benefits: ['Low cost of living', 'Multicultural', 'Global degrees']
-        },
-        {
-            id: '11',
-            name: 'New Zealand',
-            code: 'NZ',
-            flag: 'https://flagcdn.com/w80/nz.png',
-            image: 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?auto=format&fit=crop&q=80&w=800',
-            description: 'World-renowned education system focusing on practical and modern teaching.',
-            students: '40k+',
-            rating: '4.8',
-            benefits: ['Stunning landscapes', 'Safe and welcoming', 'Work opportunities']
-        },
-        {
-            id: '12',
-            name: 'United Kingdom',
-            code: 'GB',
-            flag: 'https://flagcdn.com/w80/gb.png',
-            image: 'https://plus.unsplash.com/premium_photo-1671734033306-02d572d42299?auto=format&fit=crop&q=80&w=800',
-            description: 'Home to world-class universities like Oxford and Cambridge. Fast-track degrees.',
-            students: '120k+',
-            rating: '4.8',
-            benefits: ['Post-study work visa', 'Quality education', 'Rich heritage']
-        },
-        {
-            id: '13',
-            name: 'USA',
-            code: 'US',
-            flag: 'https://flagcdn.com/w80/us.png',
-            image: 'https://images.unsplash.com/photo-1534270804882-6b5048b1c1fc?auto=format&fit=crop&q=80&w=800',
-            description: 'Home to the Ivy League and world-renowned research institutions.',
-            students: '150k+',
-            rating: '4.8',
-            benefits: ['Top ranked universities', 'OPT opportunities', 'Diverse culture']
-        },
-        {
-            id: '14',
-            name: 'Canada',
-            code: 'CA',
-            flag: 'https://flagcdn.com/w80/ca.png',
-            image: 'https://images.unsplash.com/photo-1517935703635-2717079c21eb?auto=format&fit=crop&q=80&w=800',
-            description: 'Top-ranked safety and multicultural environment. High demand for skilled graduates.',
-            students: '90k+',
-            rating: '4.9',
-            benefits: ['Easy PR pathways', 'Work while studying', 'High quality of life']
-        },
-        {
-            id: '15',
-            name: 'Australia',
-            code: 'AU',
-            flag: 'https://flagcdn.com/w80/au.png',
-            image: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=800',
-            description: 'World-class education and lifestyle. Excellent post-study work rights.',
-            students: '70k+',
-            rating: '4.7',
-            benefits: ['Post-study work visa', 'High quality of life', 'Great weather']
         }
     ];
 
@@ -292,7 +204,7 @@ export const DataProvider = ({ children }) => {
     const [stats, setStats] = useState(() => loadState('stats', defaultStats));
     const [countries, setCountries] = useState(() => {
         const saved = loadState('countries', defaultCountries);
-        if (saved && saved.length !== 15) {
+        if (saved && saved.length !== 7) {
             localStorage.setItem('countries', JSON.stringify(defaultCountries));
             return defaultCountries;
         }
